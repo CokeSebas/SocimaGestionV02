@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="50dp">
+<TextView
+    android:id="@+id/TituloInicio"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Inicio"
+    android:textColor="#FFF"
+    android:textSize="40dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="40dp">
+
+            <ImageView
+                android:id="@+id/PrimerBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="550dp"
+            android:layout_height="300dp"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/SegundoBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="550dp"
+            android:layout_height="300dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/TercerBanner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal">
+<LinearLayout
+    android:layout_width="100dp"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="100dp">
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/ImagenProductoCarro"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            />
+    </LinearLayout>
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/Info"
+        android:layout_width="135dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginLeft="5dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/NombreProductoCarro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Platos vidrio Txt"
+            android:textStyle="bold"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/CodigoProductoCarro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Codigo Producto"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/PrecioProductoCarro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:id="@+id/CantidadProductoCarro"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/esqdos"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="x100"
+            android:textColor="#FFF"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

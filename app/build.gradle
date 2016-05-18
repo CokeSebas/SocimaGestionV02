@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        Socima {
+            keyAlias 'socima'
+            keyPassword '123456'
+            storeFile file('Socima')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+    defaultConfig {
+        applicationId "com.odril.socimagestionv02"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
+    compile 'com.rengwuxian.materialedittext:library:2.0.3'
+    compile 'com.takwolf.android:lock9view:0.0.2'
+    compile 'it.neokree:MaterialTabs:0.11'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.1@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.3@aar'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.siriscac:progresspageindicator:1.0.0'
+    compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.7.1'
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'cn.pedant.sweetalert:library:1.3'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.android.support:appcompat-v7:21.+'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.android.support:appcompat-v7:21.+'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.android.support:appcompat-v7:21.+'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.android.support:appcompat-v7:21.+'
+}
+

@@ -1,0 +1,2 @@
+# socimaMovil
+Aplicacion socima

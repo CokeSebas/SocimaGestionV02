@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base" />
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+
+
+    </style>
+
+    <style name="ActividadClara" parent="Theme.AppCompat.NoActionBar">∑
+
+    </style>
+
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+
+    <color name="card_expand_title_color">#FFF</color>
+    <color name="white_pressed">#F00</color>
+    <color name="half_black">#ff575757</color>
+
+    <style name="card.main_layout">
+        <item name="android:background">@drawable/card_selector</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">@dimen/card_main_layout_view_margin_bottom</item>
+        <item name="android:layout_marginLeft">@dimen/card_main_layout_view_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/card_main_layout_view_margin_right</item>
+    </style>
+
+    <dimen name="card_default_native_margin_bottom">0dp</dimen>
+    <dimen name="card_default_native_margin_left">0dp</dimen>
+    <dimen name="card_default_native_margin_right">0dp</dimen>
+    <dimen name="card_default_native_margin_top">0dp</dimen>
+
+    <dimen name="card_header_native_default_paddingLeft">0dp</dimen>
+    <dimen name="card_header_native_default_paddingRight">0dp</dimen>
+    <dimen name="card_header_native_default_paddingTop">0dp</dimen>
+
+    <style name="card.native.content_outer_layout">
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingLeft">@dimen/card_main_content_native_default_paddingLeft</item>
+        <item name="android:paddingRight">@dimen/card_main_content_native_default_paddingRight</item>
+        <item name="android:paddingTop">@dimen/card_main_content_native_default_paddingTop</item>
+        <item name="android:paddingBottom">@dimen/card_main_content_native_default_paddingBottom</item>
+    </style>
+
+
+
+</resources>

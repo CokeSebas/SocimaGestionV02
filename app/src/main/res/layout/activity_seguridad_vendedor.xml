@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:orientation="vertical"
+    tools:context="com.odril.socimagestionv02.SeguridadVendedor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acceso Vendedor"
+            android:textColor="#ffafafaf"
+            android:textSize="50dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/NombreVendedor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="asdasd"
+            android:textColor="#ffafafaf"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <com.takwolf.android.lock9.Lock9View
+            android:id="@+id/lock_9_view"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            app:lineColor="#ff2c9922"
+            app:lineWidth="8dp"
+            app:nodeOnSrc=  "@drawable/lock_9_view_node_highlighted"
+            app:nodeSrc="@drawable/lock_9_view_node_normal" />
+
+        <TextView
+            android:id="@+id/Recuperar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Olvide el patron !"
+            android:textColor="#fc5d9700"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/RecuperarClave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/IngresarClave2"
+                android:password="true"
+                app:met_baseColor="#ffececec"
+                app:met_floatingLabel="highlight"
+                app:met_iconLeft="@drawable/ic_key"
+                app:met_primaryColor="#fc2340d1" />
+
+            <Button
+                android:id="@+id/BtnRecuperar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/btnpressverde"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:text="Recuperar" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

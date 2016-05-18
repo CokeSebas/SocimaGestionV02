@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.odril.socimagestionv02" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <permission
+        android:name="com.expocodetech.android.maps.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.expocodetech.android.maps.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/socima"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon" >
+        <activity
+            android:name=".Inicio"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Sistema"
+            android:label="@string/title_activity_sistema"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".SeguridadVendedor"
+            android:label="@string/title_activity_vendedor"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".SistemaVendedor"
+            android:label="@string/title_activity_sistema_vendedor"
+            android:screenOrientation="landscape"
+            android:theme="@style/ActividadClara" />
+        <activity
+            android:name=".SistemaCliente"
+            android:label="@string/title_activity_sistema_cliente"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Cliente"
+            android:label="@string/title_activity_cliente"
+            android:screenOrientation="landscape"
+            android:theme="@style/ActividadClara" />
+        <activity
+            android:name=".Catalogo"
+            android:label="@string/title_activity_catalogo"
+            android:screenOrientation="landscape"
+            android:theme="@style/ActividadClara" />
+        <activity
+            android:name=".PerfilCliente"
+            android:label="@string/title_activity_perfil_cliente"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".SeguridadCliente"
+            android:label="@string/title_activity_seguridad_cliente"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".Noticias"
+            android:label="@string/title_activity_noticias"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".DetalleProducto"
+            android:label="@string/title_activity_detalle_producto"
+            android:screenOrientation="landscape"
+            android:theme="@style/ActividadClara" >
+        </activity>
+        <activity
+            android:name=".CarroCompleto"
+            android:label="@string/title_activity_carro_completo"
+            android:launchMode="singleInstance" >
+        </activity>
+        <activity
+            android:name=".Tutorial"
+            android:label="@string/title_activity_tutorial"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".VerOrden"
+            android:label="@string/title_activity_ver_orden"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+    </application>
+
+</manifest>

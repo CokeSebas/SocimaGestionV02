@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="FondoGris">#222</color>
+    <color name="VerdeOscuro">#fb053f00</color>
+    <color name="FondoImg">#ff6a6a6a</color>
+    <color name="TextoLogo">#FFF</color>
+    <color name="FondoBannerLogin">#ff52aa2b</color>
+    <color name="AzulLink">#fc2340d1</color>
+    <color name="Cliente">#fc283fc0</color>
+    <color name="primaryDark">#ff333333</color>
+    <color name="secondaryDark">#ff575757</color>
+    <color name="Leida">#ff485741</color>
+    <color name="primary">#ff52</color>
+
+    <color name="demoextra_card_background_color1">#FFBB33</color>
+    <color name="demoextra_card_background_color2">#98CC00</color>
+    <color name="demoextra_card_background_color3">#A966CC</color>
+    <color name="demoextra_card_background_color4">#33B4E4</color>
+    <color name="demoextra_card_background_color5">#FF4343</color>
+    <color name="demoextra_card_background_color6">#A11143</color>
+
+    <color name="app_primary">#455A64</color>
+    <color name="app_primary_dark">#37474F</color>
+    <color name="app_primary_pressed">#FF3C4D57</color>
+    <color name="app_ripple">#ff4aaf38</color>
+
+</resources>

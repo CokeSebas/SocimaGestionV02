@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1200dp"
+    android:layout_height="wrap_content"
+    android:background="#ff454545"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/TituloNoticia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff5d9732"
+        android:paddingLeft="10dp"
+        android:text="Noticia"
+        android:textColor="#FFF"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/Imagen"
+        android:layout_width="1176dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:src="@drawable/lanners" />
+
+    <TextView
+        android:id="@+id/Noticia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Probando Noticia"
+        android:textColor="#FFF"
+        android:textSize="15dp" />
+
+</LinearLayout>
+

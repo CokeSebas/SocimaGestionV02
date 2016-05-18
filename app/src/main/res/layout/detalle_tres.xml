@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff082308"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="8">
+
+        <TextView
+            android:id="@+id/OrdenCompraLista"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#ff082308"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="12830912839013"
+            android:textColor="#FFF"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/ClienteLista"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="#ff0a260a"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="JUAN ANTONIO RAMIREZ RIVERA ALVAREZ"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/DireccionClienteLista"
+            android:layout_width="230dp"
+            android:layout_height="match_parent"
+            android:background="#ff082308"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="JUAN ANTONIO RAMIREZ RIVERA ALVAREZ, 82 marcella"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/TipoPagoLista"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#ff0a260a"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Pago Habitual"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/TotalLista"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#ff082308"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="$123.123.123"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/EstadoLista"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#ff0a260a"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Confirmado"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/FechaRegistroLista"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="2015/21/06"
+            android:background="#ff082308"
+            android:textColor="#FFF" />
+
+            <ImageButton
+                android:id="@+id/VerOrden"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/ver"
+                android:src="@drawable/lupa" />
+
+            <ImageButton
+                android:id="@+id/EditarOrden"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/editarb"
+                android:src="@drawable/editar" />
+
+            <ImageButton
+                android:id="@+id/ConfirmarOrden"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/confirmarb"
+                android:src="@drawable/confirmar" />
+
+            <ImageButton
+                android:id="@+id/CancelarOrden"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/elimin"
+                android:src="@drawable/eliminar" />
+        </LinearLayout>
+
+
+
+</LinearLayout>

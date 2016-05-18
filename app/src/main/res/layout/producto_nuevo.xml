@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/FondoGris"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/ImgPN"
+        android:layout_width="100dp"
+        android:background="@drawable/esquina_redondas"
+        android:layout_height="100dp"
+         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/NombrePN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del Producto"
+            android:textColor="#FFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Codigo:"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/CodigoPN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:text="Codigo del Producto"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Stock:"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/CantidadPN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:text="Codigo del Producto"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Precio:"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/PrecioPN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:text="Codigo Productos"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:orientation="vertical"
+    tools:context="com.odril.socimagestion.Login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#FFF"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/socima"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:id="@+id/Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical">
+
+            <LinearLayout
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/EdUsuario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="@string/IngresarUsuario"
+                        android:singleLine="true"
+                        app:met_baseColor="#ffb6b6b6"
+                        app:met_floatingLabel="highlight"
+                        app:met_iconLeft="@drawable/ic_action"
+                        app:met_primaryColor="#FFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/EdClave"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="@string/IngresarClave"
+                        android:password="true"
+                        app:met_baseColor="#ffb6b6b6"
+                        app:met_floatingLabel="highlight"
+                        android:singleLine="true"
+                        app:met_iconLeft="@drawable/ic_key"
+                        app:met_primaryColor="#FFF" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/BtnIngresar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btnpressverde"
+                        android:textColor="#FFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:text="@string/BtnIngresar" />
+
+                    <!-- <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textColor="@color/AzulLink"
+                         android:text="Recuperar"
+                         /> -->
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

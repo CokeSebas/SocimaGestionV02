@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:orientation="vertical"
+    tools:context="com.odril.socimagestionv02.SistemaVendedor">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <it.neokree.materialtabs.MaterialTabHost
+            android:id="@+id/materialTabHost"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:accentColor="#ffc400"
+            app:primaryColor="#ff2c9922"
+            app:textColor="#FFFFFF" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tabHost" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/FooterEf"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/Catalago"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bordes"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:text="IR AL CATALOGO"
+                android:textColor="#FFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

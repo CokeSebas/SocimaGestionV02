@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:orientation="vertical"
+    tools:context="com.odril.socimagestionv02.SistemaCliente">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/TituloBuscarCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Cliente"
+            android:textColor="#FFF"
+            android:textSize="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/txtSearch"
+            android:layout_width="800dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Buscar Cliente"
+            android:textColor="#FFF"
+            android:textColorHint="#ff999999" />
+
+        <LinearLayout
+            android:id="@+id/ContenedorBotones"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/SelecionarCliente"
+                android:layout_width="790dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btnpressverde"
+                android:text="Ver Perfil"
+                android:textColor="#FFF" />
+
+            <LinearLayout
+                android:layout_width="800dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#ff0c962c"
+
+                    android:gravity="center_horizontal|center_vertical">
+
+
+                    <Button
+                        android:id="@+id/irCatalogo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/btnpressverdefuerte"
+                        android:text="Ir al Catalogo"
+                        android:textColor="#FFF"
+                        android:textSize="30sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|center_vertical">
+
+                    <Button
+                        android:id="@+id/Salir"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/btnpressrojo"
+                        android:text="Otro Cliente"
+                        android:textColor="#FFF"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

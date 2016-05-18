@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            >
+
+            <ImageView
+                android:id="@+id/ImagenProductoCarroDos"
+                android:layout_width="110dp"
+                android:layout_height="110dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/InfoDos"
+        android:layout_width="200dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="5dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/NombreProductoCarroDos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Platos vidrio Txt"
+            android:textColor="#fFf"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/CodigoProductoCarroDos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Codigo Producto"
+            android:textColor="#fFf"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/PrecioProductoCarroDos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio"
+            android:textColor="#fFf"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="130dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:id="@+id/CantidadProductoCarroDos"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/esqdos"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="x100"
+            android:textColor="#FFF"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

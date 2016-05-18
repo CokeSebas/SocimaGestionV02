@@ -1,0 +1,425 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/FondoGris"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.odril.socimagestionv02.CarroCompleto">
+
+    <RelativeLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:clickable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:id="@+id/Banner"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#ff82be59"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TituloCarroCompleto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CARRO DE COMPRA"
+                android:textColor="#FFF"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/ClienteCarro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cliente :"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/NombreClienteCarroCompleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Nombre Cliente"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/OrdenCarro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Orden de Compra : #"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/OrdenCarroCompleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Nombre Cliente"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="613dp"
+            android:layout_below="@id/Banner"
+            android:clickable="true"
+            android:focusableInTouchMode="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerviewTres"
+                android:layout_width="800dp"
+                android:layout_height="match_parent"
+                android:background="#ff082308"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:paddingLeft="30dp"
+                android:paddingTop="2dp"
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#ffa5a80f"
+                android:clickable="true"
+                android:focusableInTouchMode="true" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusableInTouchMode="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ff082308"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/TituloDireccionFact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Direccion Facturacion"
+                        android:textColor="#FFF"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/DireccionFact"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_below="@id/TituloDireccionFact"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/editar_envio"
+                        android:padding="10dp"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
+                        android:text="Sin direccion"
+                        android:textColor="#FFF"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/TituloDireccionEnvio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/DireccionFact"
+                        android:layout_marginTop="10dp"
+                        android:text="Direccion Envio"
+                        android:textColor="#FFF"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/DireccionEnvio"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_below="@id/TituloDireccionEnvio"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/editar_envio"
+                        android:padding="10dp"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
+                        android:text="Sin direccion"
+                        android:textColor="#FFF"
+                        android:textSize="15dp" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/DireccionEnvio"
+                        android:layout_marginTop="10dp"
+                        android:checkedButton="@+id/ch1"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/ch1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pago Habitual"
+                            android:textColor="#FFF"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/ch2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Transferencia"
+                            android:textColor="#FFF"
+                            android:textStyle="bold" />
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/TituloComentario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/radioGroup"
+                        android:layout_marginTop="10dp"
+                        android:text="Agregar Comentario"
+                        android:textColor="#FFF"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/Comentario"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:layout_below="@id/TituloComentario"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/editar_envio"
+                        android:ems="10"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:padding="10dp"
+                        android:textColor="#FFF">
+
+
+                    </EditText>
+
+                    <LinearLayout
+                        android:id="@+id/LSinIva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/Comentario"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Valor Sin IVA : $"
+                            android:textColor="#FFF"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TotalSinIva"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="0"
+                            android:textColor="#FFF"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LIva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/LSinIva"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IVA 19% : $"
+                            android:textColor="#FFF"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/IVA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="0"
+                            android:textColor="#FFF"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/LTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/LIva"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total: $"
+                            android:textColor="#FFF"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TotalCompra"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="0"
+                            android:textColor="#FFF"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Dcto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/LTotal"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/descuentoA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="#FFF"
+                            android:textSize="20dp"
+                            android:text="Porcentaje de Descuento: "/>
+
+                        <EditText
+                            android:id="@+id/dctoA"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="120dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:background="#ff82be59"
+                            android:ems="4"
+                            android:text="0"
+                            android:gravity="top"
+                            android:inputType="number"
+                            android:textColor="#FFF"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LCreditoDispo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/Dcto"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Credito Disponible:"
+                            android:textColor="#FFF"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/CreditoDisponibleC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Sin Credito Disponible"
+                            android:textColor="#FFF"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/CancelarVenta"
+                android:layout_width="200dp"
+                android:layout_height="70dp"
+                android:background="@drawable/cancelar"
+                android:text="Cancelar Venta"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/VentaPendiente"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/venta_pendiente"
+                android:text="Venta Pendiente"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+
+            <Button
+                android:id="@+id/ConfirmarVenta"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/confirmar_venta"
+                android:text="Confirmar Venta"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

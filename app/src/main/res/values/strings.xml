@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">SocimaGestion</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Login</string>
+    <string name="Usuario">Usuario</string>
+    <string name="Clave">Contraseña</string>
+    <string name="title_activity_sistema">Sistema</string>
+    <string name="title_activity_cliente">Cliente</string>
+    <string name="title_activity_vendedor">Vendedor</string>
+    <string name="title_activity_catalogo">Catalogo</string>
+    <string name="IngresarUsuario">Ingresar Usuario</string>
+    <string name="IngresarClave">Ingresar Contraseña</string>
+    <string name="IngresarClave2">Ingresar Contraseña para recuperar patron</string>
+    <string name="BtnIngresar">Ingresar</string>
+    <string name="title_activity_sistema_vendedor">SistemaVendedor</string>
+    <string name="title_activity_sistema_cliente">Sistema_cliente</string>
+    <string name="title_activity_perfil_cliente">Perfil Cliente</string>
+    <string name="title_activity_seguridad_cliente">SeguridadCliente</string>
+    <string name="title_activity_noticias">Noticias</string>
+    <string name="title_activity_actividad_catalogo">actividad_catalogo</string>
+    <string name="BuscarProducto">Buscar Producto</string>
+    <string name="Descargando">Descargando Imagenes</string>
+    <string name="SinMemoria"> Sin espacio en la memoria</string>
+    <string name="Error">Error la descargar</string>
+    <string name="carddemo_extras_title_base_stag1">PRODUCTO 1</string>
+    <string name="carddemo_extras_title_base_stag2">PRODUCTO 2</string>
+    <string name="carddemo_extras_title_base_stag3">PRODUCTO 3</string>
+    <string name="carddemo_extras_title_base_stag4">PRODUCTO 4</string>
+    <string name="carddemo_extras_title_base_stag5">PRODUCTO 5</string>
+    <string name="carddemo_extras_title_base_stag6">PRODUCTO 6</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_detalle_producto">DetalleProducto</string>
+    <string name="title_activity_carro_completo">CarroCompleto</string>
+    <string name="title_activity_tutorial">Tutorial</string>
+    <string name="title_activity_ver_orden">VerOrden</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps32">Map</string>
+    <string name="title_activity_direccion_cliente">Map</string>
+
+</resources>
