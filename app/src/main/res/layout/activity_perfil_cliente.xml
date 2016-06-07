@@ -7,7 +7,7 @@
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="25dp"
-    tools:context="com.odril.socimagestionv02.PerfilCliente">
+    tools:context="com.odril.Socima_Gestion.PerfilCliente">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 
 import android.content.Context;
@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.odril.socimagestionv02.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

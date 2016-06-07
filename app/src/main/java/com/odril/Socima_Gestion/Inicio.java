@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -20,6 +20,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.odril.socimagestionv02.R;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -201,12 +204,48 @@ public class Inicio extends ActionBarActivity {
             fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
         }
         //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1", null);
-        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1 AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
+        //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1 AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
+        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
 
     }
     public Cursor getDetalleOrden(int idOrden) {
         return DB.rawQuery("SELECT do.idProducto, do.Cantidad, do.Precio, p.Descuento, p.Modelo FROM Mv_detalleOrden do JOIN Mv_Producto p ON (do.idProducto = p.idProducto) WHERE do.idOrden = " + idOrden + "", null);
     }
+
+    /*public Cursor getOrdenesPendientes(){
+        int dia = 0;
+        String fechaActual = "";
+        String fecha5DiasAntes = "";
+        Calendar fecha = new GregorianCalendar();
+        int año = fecha.get(Calendar.YEAR);
+        String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
+        String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
+        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
+        String mes = "";
+        if(mes2.length() == 1){
+            mes = "0"  + mes2;
+        }else{
+            mes = mes2;
+        }
+
+        if(dia2.length() == 1){
+            dia = 0 + Integer.parseInt(dia2);
+            fechaActual = año + "-" + mes + "-0" + dia;
+        }else{
+            dia = Integer.parseInt(dia2);
+            fechaActual = año + "-" + mes + "-" + dia;
+        }
+
+        if(dia3.length() == 1){
+            dia = 0 + Integer.parseInt(dia2);
+            fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
+        }else{
+            dia = Integer.parseInt(dia2);
+            fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
+        }
+        //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1", null);
+        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1 AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
+    }*/
 
 //ACTUALIZACION DE DATOS --------------------------------------------------------------
 
@@ -216,7 +255,6 @@ public class Inicio extends ActionBarActivity {
         String AVendedores = null, AMenu = null, AProductos = null, AOrdenes = null, AClientes = null, ANoticias = null, AEstados = null, AMarcas = null;
 
         Httppostaux post;
-        //ActualizarDatos act;
 
         @Override
         protected void onPreExecute() {
@@ -485,8 +523,6 @@ public class Inicio extends ActionBarActivity {
 
 
                         if (!AMenu.equals(Menu)) {
-
-
                             Post = new HttpPost("http://socimagestion.com/Movil/Datos/Menu.php");
                             //Post = new HttpPost("http://dev.odril.com/dev/socima/Datos/Menu.php");
                             Response = httpClient.execute(Post);
@@ -569,7 +605,9 @@ public class Inicio extends ActionBarActivity {
                                     } catch (JSONException e) {
                                         ExisteDato = 0;
                                         Log.d("ERRORDATOS", "Categoria Producto");
+                                        //System.out.println(e);
                                     }
+
                                     if (ExisteDato > 0) {
                                         for (int i = 0; i < CategoriasProductos.length(); i++) {
                                             JSONObject CategoriaProductos = CategoriasProductos.getJSONObject(i);
@@ -731,6 +769,13 @@ public class Inicio extends ActionBarActivity {
                                                 DB.execSQL(SqlProduco);
                                                 //System.out.println("dato guardo producto");
                                                 publishProgress("" + i);
+
+                                                if (NuevoEquipo.equals("SI")) {
+                                                    String SqlImagenP = "INSERT INTO Mv_ImagenP (idProducto, Imagen) VALUES ("+Integer.parseInt(Producto.getString("idProducto"))+",'NO');";
+                                                    DB.execSQL(SqlImagenP);
+                                                    //System.out.println("dato guardo producto 2");
+                                                }
+
                                                 //}
 
                                             } catch (Exception e) {
@@ -744,7 +789,6 @@ public class Inicio extends ActionBarActivity {
                                                 pdcto += 0;
                                                 //System.out.println("dato descuento suma 0");
                                             }
-
 
                                             /*if(Producto.getString("Cantidad").equals("0")){
                                                 NotificationCompat.Builder mBuilder =
@@ -774,7 +818,6 @@ public class Inicio extends ActionBarActivity {
 
                                         }
                                     }
-
 
                                     handler.post(new Runnable() {
                                         public void run() {
@@ -1042,7 +1085,7 @@ public class Inicio extends ActionBarActivity {
 
                                                 //System.out.println("dato coordenada " + TCliente.getString("fax").length());
                                                 if(TCliente.getString("fax").length() != 0){
-                                                    System.out.println("dato coordenada " + TCliente.get("fax"));
+                                                    //System.out.println("dato coordenada " + TCliente.get("fax"));
                                                     SqlInsertCliente = " Insert into Mv_Cliente(CodigoCliente,Nombre,Email,Telefono,Vendedor,Credito,Direccion,Ciudad,Region,Codigo, Rut, CreditoMaximo, Coordenada) " +
                                                             "values(" + Integer.parseInt(TCliente.getString("CodigoCliente"))
                                                             + ",'" + TCliente.getString("Nombre") + "'," +
@@ -1057,8 +1100,10 @@ public class Inicio extends ActionBarActivity {
                                                             TCliente.getString("Rut") + "'," +
                                                             TCliente.getString("CreditoMaximo") + ",'" +
                                                             TCliente.getString("fax")+ "');";
+                                                    DB.execSQL(SqlInsertCliente);
+                                                    //System.out.println("dato guardo cliente con coordenada");
                                                 }else{
-                                                    System.out.println("dato coordenada nulo");
+                                                    //System.out.println("dato coordenada nulo");
                                                     SqlInsertCliente = " Insert into Mv_Cliente(CodigoCliente,Nombre,Email,Telefono,Vendedor,Credito,Direccion,Ciudad,Region,Codigo, Rut, CreditoMaximo) " +
                                                             "values(" + Integer.parseInt(TCliente.getString("CodigoCliente"))
                                                             + ",'" + TCliente.getString("Nombre") + "'," +
@@ -1072,8 +1117,10 @@ public class Inicio extends ActionBarActivity {
                                                             TCliente.getString("Codigo") + "','" +
                                                             TCliente.getString("Rut") + "'," +
                                                             TCliente.getString("CreditoMaximo") + ");";
+                                                    DB.execSQL(SqlInsertCliente);
+                                                    //System.out.println("dato guardo cliente sin coordenada");
                                                 }
-                                                DB.execSQL(SqlInsertCliente);
+                                                //DB.execSQL(SqlInsertCliente);
                                                 //System.out.println("dato guardo cliente");
 
                                             } catch (Exception e) {
@@ -1599,193 +1646,189 @@ public class Inicio extends ActionBarActivity {
 
                 Cursor D = DB.rawQuery("Select idProducto, Imagen from Mv_Producto WHERE Modificado = 'TRUE'", null);
                 System.out.println("cantidad imagenes modificadas " + D.getCount());
+                /*if (D.moveToFirst()) {
+                    do {
+                        for (int y = 2; y < 6; y++) {
+                            String Nombre = D.getInt(0) + "_" + y + ".jpg";
+                            String Nombre3 = D.getInt(0) + "_" + y + "-500x500.jpg";
+                            String Nombre4 = D.getInt(0) + "_" + y + "-500x500.JPG";
+                            //System.out.println("dato imagen modificada " + Nombre);
+                            //System.out.println("dato imagen modificada " + Nombre3);
+                            //System.out.println("dato imagen modificada " + Nombre4);
+                            try {
+                                File root = new File(Environment.getExternalStorageDirectory() + "/SocimaGestion");
+                                if (root.exists() && root.isDirectory()) {
 
-                    /*if (D.moveToFirst()) {
-                        do {
-                            for (int y = 2; y < 6; y++) {
-                                String Nombre = D.getInt(0) + "_" + y + ".jpg";
-                                String Nombre3 = D.getInt(0) + "_" + y + "-500x500.jpg";
-                                String Nombre4 = D.getInt(0) + "_" + y + "-500x500.JPG";
-                                //System.out.println("dato imagen modificada " + Nombre);
-                                //System.out.println("dato imagen modificada " + Nombre3);
-                                //System.out.println("dato imagen modificada " + Nombre4);
-                                try {
-                                    File root = new File(Environment.getExternalStorageDirectory() + "/SocimaGestion");
-                                    if (root.exists() && root.isDirectory()) {
-
-                                    } else {
-                                        root.mkdir();
-                                    }
-
-                                    if (Nombre.length() == 11) {
-                                        Nombre = "0" + Nombre;
-                                    }
-
-                                    if (Nombre3.length() == 19) {
-                                        Nombre3 = "0" + Nombre3;
-                                    }
-                                    if (Nombre4.length() == 19) {
-                                        Nombre4 = "0" + Nombre4;
-                                    }
-
-                                    String url5="",url6="",url7="",url8="";
-
-                                    File Imagen = new File(root + "/" + Nombre);
-
-
-                                    url5 = "http://socimagestion.com/image/cache/data/" + Nombre3;
-                                    url6 = "http://socimagestion.com/image/cache/data/product-" + D.getInt(0)+"/"+Nombre3;
-
-                                    url7 = "http://socimagestion.com/image/cache/data/" + Nombre4;
-                                    url8 = "http://socimagestion.com/image/cache/data/product-" + D.getInt(0)+"/"+Nombre4;
-
-                                    HttpClient httpClient5 = new DefaultHttpClient();
-                                    HttpGet httpGet5 = new HttpGet(url5);
-                                    HttpResponse response5 = httpClient5.execute(httpGet5);
-                                    //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
-                                    if (response5.getStatusLine().getStatusCode() == 200) {
-                                        Log.d("IMAGEN", "Descargando5 actualizada " + Nombre3);
-                                        try {
-                                            HttpEntity entity5 = response5.getEntity();
-                                            InputStream inputStream = entity5.getContent();
-                                            Boolean status = Imagen.createNewFile();
-                                            FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
-                                            byte[] buffer = new byte[1024];
-                                            long total = 0;
-                                            int count;
-                                            while ((count = inputStream.read(buffer)) != -1) {
-                                                total += count;
-                                                fileOutputStream.write(buffer, 0, count);
-                                            }
-                                            String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
-                                            DB.execSQL(Sqlim);
-                                            fileOutputStream.close();
-                                            inputStream.close();
-                                        } catch (Exception e) {
-                                            Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
-
-                                        }
-                                    } else if (response5.getStatusLine().getStatusCode() == 404) {
-                                        //System.out.println("dato url " + url2);
-                                        //Log.d("IMAGEN", "No encontrada2 :" + url2);
-                                        Log.d("IMAGEN", "No encontrada5 :" + Nombre3);
-
-                                    }
-
-
-
-                                    HttpClient httpClient6 = new DefaultHttpClient();
-                                    HttpGet httpGet6 = new HttpGet(url6);
-                                    HttpResponse response6 = httpClient6.execute(httpGet6);
-                                    //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
-                                    if (response6.getStatusLine().getStatusCode() == 200) {
-                                        Log.d("IMAGEN", "Descargando6 actualizada " + Nombre4);
-                                        //System.out.println("Descargando6 " + url6);
-                                        try {
-                                            HttpEntity entity6 = response6.getEntity();
-                                            InputStream inputStream = entity6.getContent();
-                                            Boolean status = Imagen.createNewFile();
-                                            FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
-                                            byte[] buffer = new byte[1024];
-                                            long total = 0;
-                                            int count;
-                                            while ((count = inputStream.read(buffer)) != -1) {
-                                                total += count;
-                                                fileOutputStream.write(buffer, 0, count);
-                                            }
-                                            String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
-                                            DB.execSQL(Sqlim);
-                                            fileOutputStream.close();
-                                            inputStream.close();
-                                        } catch (Exception e) {
-                                            Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
-
-                                        }
-                                    } else if (response6.getStatusLine().getStatusCode() == 404) {
-                                        //System.out.println("dato url " + url2);
-                                        //Log.d("IMAGEN", "No encontrada2 :" + url2);
-                                        Log.d("IMAGEN", "No encontrada6 :" + Nombre4);
-
-                                    }
-
-
-                                    HttpClient httpClient7 = new DefaultHttpClient();
-                                    HttpGet httpGet7 = new HttpGet(url7);
-                                    HttpResponse response7 = httpClient7.execute(httpGet7);
-                                    //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
-                                    if (response7.getStatusLine().getStatusCode() == 200) {
-                                        Log.d("IMAGEN", "Descargando7 actualizada " + Nombre);
-                                        try {
-                                            HttpEntity entity7 = response7.getEntity();
-                                            InputStream inputStream = entity7.getContent();
-                                            Boolean status = Imagen.createNewFile();
-                                            FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
-                                            byte[] buffer = new byte[1024];
-                                            long total = 0;
-                                            int count;
-                                            while ((count = inputStream.read(buffer)) != -1) {
-                                                total += count;
-                                                fileOutputStream.write(buffer, 0, count);
-                                            }
-                                            String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
-                                            DB.execSQL(Sqlim);
-                                            fileOutputStream.close();
-                                            inputStream.close();
-                                        } catch (Exception e) {
-                                            Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
-
-                                        }
-                                    } else if (response7.getStatusLine().getStatusCode() == 404) {
-                                        //System.out.println("dato url " + url2);
-                                        //Log.d("IMAGEN", "No encontrada2 :" + url2);
-                                        Log.d("IMAGEN", "No encontrada7 :" + Nombre);
-
-                                    }
-
-                                    HttpClient httpClient8 = new DefaultHttpClient();
-                                    HttpGet httpGet8 = new HttpGet(url8);
-                                    HttpResponse response8 = httpClient8.execute(httpGet8);
-                                    //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
-                                    if (response8.getStatusLine().getStatusCode() == 200) {
-                                        Log.d("IMAGEN", "Descargando8 actualizada " + Nombre);
-                                        //System.out.println("Descargando8 " + url8);
-                                        try {
-                                            HttpEntity entity8 = response8.getEntity();
-                                            InputStream inputStream = entity8.getContent();
-                                            Boolean status = Imagen.createNewFile();
-                                            FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
-                                            byte[] buffer = new byte[1024];
-                                            long total = 0;
-                                            int count;
-                                            while ((count = inputStream.read(buffer)) != -1) {
-                                                total += count;
-                                                fileOutputStream.write(buffer, 0, count);
-                                            }
-                                            String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
-                                            DB.execSQL(Sqlim);
-                                            fileOutputStream.close();
-                                            inputStream.close();
-                                        } catch (Exception e) {
-                                            Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
-
-                                        }
-                                    } else if (response8.getStatusLine().getStatusCode() == 404) {
-                                        //System.out.println("dato url " + url2);
-                                        //Log.d("IMAGEN", "No encontrada2 :" + url2);
-                                        Log.d("IMAGEN", "No encontrada8 :" + Nombre3);
-                                    }
-
-                                } catch (Exception e) {
-                                    Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+                                } else {
+                                    root.mkdir();
                                 }
-                            }
-                        } while(D.moveToNext());
-                    }*/
 
+                                if (Nombre.length() == 11) {
+                                    Nombre = "0" + Nombre;
+                                }
+
+                                if (Nombre3.length() == 19) {
+                                    Nombre3 = "0" + Nombre3;
+                                }
+                                if (Nombre4.length() == 19) {
+                                    Nombre4 = "0" + Nombre4;
+                                }
+
+                                String url5="",url6="",url7="",url8="";
+
+                                File Imagen = new File(root + "/" + Nombre);
+
+
+                                url5 = "http://socimagestion.com/image/cache/data/" + Nombre3;
+                                url6 = "http://socimagestion.com/image/cache/data/product-" + D.getInt(0)+"/"+Nombre3;
+
+                                url7 = "http://socimagestion.com/image/cache/data/" + Nombre4;
+                                url8 = "http://socimagestion.com/image/cache/data/product-" + D.getInt(0)+"/"+Nombre4;
+
+                                HttpClient httpClient5 = new DefaultHttpClient();
+                                HttpGet httpGet5 = new HttpGet(url5);
+                                HttpResponse response5 = httpClient5.execute(httpGet5);
+                                //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
+                                if (response5.getStatusLine().getStatusCode() == 200) {
+                                    Log.d("IMAGEN", "Descargando5 actualizada " + Nombre3);
+                                    try {
+                                        HttpEntity entity5 = response5.getEntity();
+                                        InputStream inputStream = entity5.getContent();
+                                        Boolean status = Imagen.createNewFile();
+                                        FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
+                                        byte[] buffer = new byte[1024];
+                                        long total = 0;
+                                        int count;
+                                        while ((count = inputStream.read(buffer)) != -1) {
+                                            total += count;
+                                            fileOutputStream.write(buffer, 0, count);
+                                        }
+                                        String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        fileOutputStream.close();
+                                        inputStream.close();
+                                    } catch (Exception e) {
+                                        Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+
+                                    }
+                                } else if (response5.getStatusLine().getStatusCode() == 404) {
+                                    //System.out.println("dato url " + url2);
+                                    //Log.d("IMAGEN", "No encontrada2 :" + url2);
+                                    Log.d("IMAGEN", "No encontrada5 :" + Nombre3);
+
+                                }
+                                HttpClient httpClient6 = new DefaultHttpClient();
+                                HttpGet httpGet6 = new HttpGet(url6);
+                                HttpResponse response6 = httpClient6.execute(httpGet6);
+                                //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
+                                if (response6.getStatusLine().getStatusCode() == 200) {
+                                    Log.d("IMAGEN", "Descargando6 actualizada " + Nombre4);
+                                    //System.out.println("Descargando6 " + url6);
+                                    try {
+                                        HttpEntity entity6 = response6.getEntity();
+                                        InputStream inputStream = entity6.getContent();
+                                        Boolean status = Imagen.createNewFile();
+                                        FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
+                                        byte[] buffer = new byte[1024];
+                                        long total = 0;
+                                        int count;
+                                        while ((count = inputStream.read(buffer)) != -1) {
+                                            total += count;
+                                            fileOutputStream.write(buffer, 0, count);
+                                        }
+                                        String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        fileOutputStream.close();
+                                        inputStream.close();
+                                    } catch (Exception e) {
+                                        Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+
+                                    }
+                                } else if (response6.getStatusLine().getStatusCode() == 404) {
+                                    //System.out.println("dato url " + url2);
+                                    //Log.d("IMAGEN", "No encontrada2 :" + url2);
+                                    Log.d("IMAGEN", "No encontrada6 :" + Nombre4);
+
+                                }
+
+
+                                HttpClient httpClient7 = new DefaultHttpClient();
+                                HttpGet httpGet7 = new HttpGet(url7);
+                                HttpResponse response7 = httpClient7.execute(httpGet7);
+                                //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
+                                if (response7.getStatusLine().getStatusCode() == 200) {
+                                    Log.d("IMAGEN", "Descargando7 actualizada " + Nombre);
+                                    try {
+                                        HttpEntity entity7 = response7.getEntity();
+                                        InputStream inputStream = entity7.getContent();
+                                        Boolean status = Imagen.createNewFile();
+                                        FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
+                                        byte[] buffer = new byte[1024];
+                                        long total = 0;
+                                        int count;
+                                        while ((count = inputStream.read(buffer)) != -1) {
+                                            total += count;
+                                            fileOutputStream.write(buffer, 0, count);
+                                        }
+                                        String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        fileOutputStream.close();
+                                        inputStream.close();
+                                    } catch (Exception e) {
+                                        Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+
+                                    }
+                                } else if (response7.getStatusLine().getStatusCode() == 404) {
+                                    //System.out.println("dato url " + url2);
+                                    //Log.d("IMAGEN", "No encontrada2 :" + url2);
+                                    Log.d("IMAGEN", "No encontrada7 :" + Nombre);
+
+                                }
+
+                                HttpClient httpClient8 = new DefaultHttpClient();
+                                HttpGet httpGet8 = new HttpGet(url8);
+                                HttpResponse response8 = httpClient8.execute(httpGet8);
+                                //System.out.println("dato info imagen2 " + response2.getStatusLine().getStatusCode() + " " + Nombre);
+                                if (response8.getStatusLine().getStatusCode() == 200) {
+                                    Log.d("IMAGEN", "Descargando8 actualizada " + Nombre);
+                                    //System.out.println("Descargando8 " + url8);
+                                    try {
+                                        HttpEntity entity8 = response8.getEntity();
+                                        InputStream inputStream = entity8.getContent();
+                                        Boolean status = Imagen.createNewFile();
+                                        FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
+                                        byte[] buffer = new byte[1024];
+                                        long total = 0;
+                                        int count;
+                                        while ((count = inputStream.read(buffer)) != -1) {
+                                            total += count;
+                                            fileOutputStream.write(buffer, 0, count);
+                                        }
+                                        String Sqlim = "UPDATE Mv_Producto SET modificado = 'FALSE' WHERE idProducto = " + D.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        fileOutputStream.close();
+                                        inputStream.close();
+                                    } catch (Exception e) {
+                                        Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+
+                                    }
+                                } else if (response8.getStatusLine().getStatusCode() == 404) {
+                                    //System.out.println("dato url " + url2);
+                                    //Log.d("IMAGEN", "No encontrada2 :" + url2);
+                                    Log.d("IMAGEN", "No encontrada8 :" + Nombre3);
+                                }
+
+                            } catch (Exception e) {
+                                Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
+                            }
+                        }
+                    } while(D.moveToNext());
+                }*/
 
                 //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto LIMIT 5", null);
-                Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto", null);
-                //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto WHERE imagen = 'FALSE'", null);
+                Cursor C = DB.rawQuery("SELECT p.idProducto, p.Imagen FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE ip.Imagen = 'NO'",null);
+                //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto", null);
+                //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto WHERE imagen = 'SI'", null);
                 //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto WHERE idProducto IN (271016, 51414)", null);
                 //Cursor C = DB.rawQuery("Select idProducto, Imagen from Mv_Producto WHERE idProducto = 283260", null);
                 System.out.println("cantidad imagenes " + C.getCount());
@@ -1863,7 +1906,8 @@ public class Inicio extends ActionBarActivity {
                                                 total += count;
                                                 fileOutputStream.write(buffer, 0, count);
                                             }
-                                            String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            //String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
                                             DB.execSQL(Sqlim);
                                             fileOutputStream.close();
                                             inputStream.close();
@@ -1899,7 +1943,8 @@ public class Inicio extends ActionBarActivity {
                                                 total += count;
                                                 fileOutputStream.write(buffer, 0, count);
                                             }
-                                            String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            //String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
                                             DB.execSQL(Sqlim);
                                             fileOutputStream.close();
                                             inputStream.close();
@@ -1934,7 +1979,8 @@ public class Inicio extends ActionBarActivity {
                                                 total += count;
                                                 fileOutputStream.write(buffer, 0, count);
                                             }
-                                            String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            //String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
                                             DB.execSQL(Sqlim);
                                             fileOutputStream.close();
                                             inputStream.close();
@@ -1970,7 +2016,8 @@ public class Inicio extends ActionBarActivity {
                                                 total += count;
                                                 fileOutputStream.write(buffer, 0, count);
                                             }
-                                            String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            //String Sqlim = "UPDATE Mv_Producto SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                            String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
                                             DB.execSQL(Sqlim);
                                             fileOutputStream.close();
                                             inputStream.close();

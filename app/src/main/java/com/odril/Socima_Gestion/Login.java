@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.odril.socimagestionv02.R;
 
 public class Login extends Activity {
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/FondoGris"
     android:orientation="vertical"
-    tools:context="com.odril.socimagestionv02.SistemaVendedor">
+    tools:context="com.odril.Socima_Gestion.SistemaVendedor">
 
 
     <LinearLayout

@@ -547,7 +547,7 @@
 
         <fragment
             android:id="@+id/FrgListado"
-            class="com.odril.socimagestionv02.FragmentoCarroCompra"
+            class="com.odril.Socima_Gestion.FragmentoCarroCompra"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

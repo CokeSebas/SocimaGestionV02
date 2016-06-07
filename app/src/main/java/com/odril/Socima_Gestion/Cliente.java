@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.odril.socimagestionv02.R;
 
 import java.util.Random;
 
@@ -134,7 +135,7 @@ public class Cliente extends ActionBarActivity {
         Catalogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Cliente.this, com.odril.socimagestionv02.Catalogo.class);
+                Intent i = new Intent(Cliente.this, com.odril.Socima_Gestion.Catalogo.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 EditarUsuario.putString("ClienteActivo", "SI");

@@ -1,7 +1,6 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.odril.socimagestionv02.R;
 
 import java.text.DecimalFormat;
 
@@ -96,7 +96,7 @@ public class SistemaVendedor extends ActionBarActivity implements MaterialTabLis
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(SistemaVendedor.this, com.odril.socimagestionv02.Catalogo.class);
+                Intent i = new Intent(SistemaVendedor.this, com.odril.Socima_Gestion.Catalogo.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 

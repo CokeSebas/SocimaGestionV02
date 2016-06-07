@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

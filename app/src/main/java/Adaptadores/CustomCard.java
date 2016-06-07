@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 
-import com.odril.socimagestionv02.BaseDatos;
+import com.odril.Socima_Gestion.BaseDatos;
 import com.odril.socimagestionv02.R;
 
 import it.gmariotti.cardslib.library.internal.Card;

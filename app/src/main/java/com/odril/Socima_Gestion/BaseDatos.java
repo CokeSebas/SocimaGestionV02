@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +25,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     String SqlBanner = "CREATE TABLE Mv_Banner(BannerId INTEGER, Url TEXT, informacion TEXT)";
     String SqlEstado = "CREATE TABLE Mv_Estado(IdEstado INTEGER, Estado TEXT)";
     String SqlMarca = "CREATE TABLE Mv_Marca(IdMarca INTENGER, Nombre TEXT)";
+    String SqlImagenP = "CREATE TABLE Mv_ImagenP(IdProducto INTEGER, Imagen TEXT)";
 
 
     public BaseDatos(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -84,6 +85,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         db.execSQL(SqlBanner);
         db.execSQL(SqlEstado);
         db.execSQL(SqlMarca);
+        db.execSQL(SqlImagenP);
     }
 
     public void vaciarVendedor(SQLiteDatabase db) {
@@ -99,11 +101,12 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     public void vaciarCategoriaProducto(SQLiteDatabase db) {
-        db.execSQL("delete from  Mv_categoriaProducto");
+        db.execSQL("delete from Mv_categoriaProducto");
     }
 
 
     public void vaciarProducto(SQLiteDatabase db) {
+        //db.execSQL("delete from  Mv_Producto WHERE modificado != 'SI'");
         db.execSQL("delete from  Mv_Producto");
     }
 
@@ -145,6 +148,7 @@ public class BaseDatos extends SQLiteOpenHelper {
 
     //public Cursor BuscarCliente(String textSearch) {
     public Cursor BuscarCliente(String textSearch, int idVendedor) {
+        //System.out.println("cliente " + textSearch);
         textSearch = textSearch.replace("'", "''");
         SQLiteDatabase db = getReadableDatabase();
         if(idVendedor == 1) {
@@ -154,7 +158,8 @@ public class BaseDatos extends SQLiteOpenHelper {
         }else{
             return db.rawQuery("SELECT CodigoCliente as _id, Nombre, Credito" +
                     " FROM Mv_Cliente " +
-                    " WHERE Vendedor = " + idVendedor + " AND (Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%')", null);
+                    //" WHERE Vendedor = " + idVendedor + " AND (Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%')", null);
+                    " WHERE Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%' ", null);
         }
     }
 

@@ -5,7 +5,7 @@
     android:background="@color/FondoGris"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.odril.socimagestionv02.CarroCompleto">
+    tools:context="com.odril.Socima_Gestion.CarroCompleto">
 
     <RelativeLayout
         android:id="@+id/parent"

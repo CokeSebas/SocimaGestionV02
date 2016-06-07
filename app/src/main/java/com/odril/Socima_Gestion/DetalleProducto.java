@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.odril.socimagestionv02.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -49,7 +50,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import Adaptadores.RecyclerItemClickListener;
-import it.gmariotti.cardslib.library.view.listener.SwipeDismissTopBottomTouchListener;
 
 
 public class DetalleProducto extends ActionBarActivity {

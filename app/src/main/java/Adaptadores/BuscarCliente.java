@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.odril.socimagestionv02.BaseDatos;
-import com.odril.socimagestionv02.globals;
+import com.odril.Socima_Gestion.BaseDatos;
+import com.odril.Socima_Gestion.globals;
 import com.odril.socimagestionv02.R;
 
 /**

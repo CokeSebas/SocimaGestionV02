@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -28,6 +28,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.odril.socimagestionv02.R;
 
 import java.util.ArrayList;
 

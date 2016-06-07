@@ -1,158 +1,130 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.odril.socimagestionv02.R;
+
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class FragmentoPerfilVendedor extends Fragment {
-
-    TextView Meta, Vendedor, TxMeta, TxNoticias, TxListaCliente, Badg, Actual;
-    SharedPreferences Usuario;
-    SharedPreferences.Editor EditarUsuario;
-    SharedPreferences Cliente;
-    SharedPreferences.Editor EditarCliente;
-    ImageView Noticias, Clientes;
+public class PerfilCliente extends ActionBarActivity {
 
     private Typeface FuenteUno;
     private Typeface FuenteDos;
     private Typeface FuenteTres;
     private Typeface FuenteCuatro;
+    TextView NombreCliente;
+    SharedPreferences Usuario;
+    SharedPreferences.Editor EditarUsuario;
+    SharedPreferences Cliente;
+    SharedPreferences.Editor EditarCliente;
     BaseDatos SocimaGestion;
     SQLiteDatabase db;
-    MyAdapterCuatro adapter;
-    RecyclerView recyclerViewCuatro;
+    MyAdapterDiez adapter;
+    RecyclerView recyclerViewDiez;
     ArrayList<ArrayList<String>> datos;
     DecimalFormat formateador = new DecimalFormat("###,###");
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        actualizar();
-    }
-
+    Button Mapa;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-        Usuario = this.getActivity().getSharedPreferences("Usuario", Context.MODE_PRIVATE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_perfil_cliente);
+
+        FuenteUno = Typeface.createFromAsset(this.getAssets(), "fonts/uno.ttf");
+        FuenteDos = Typeface.createFromAsset(this.getAssets(), "fonts/dos.ttf");
+        FuenteTres = Typeface.createFromAsset(this.getAssets(), "fonts/tres.ttf");
+        FuenteCuatro = Typeface.createFromAsset(this.getAssets(), "fonts/cuatro.ttf");
+
+        NombreCliente = (TextView) findViewById(R.id.NombreCliente);
+        Usuario = getSharedPreferences("Usuario", MODE_PRIVATE);
         EditarUsuario = Usuario.edit();
-
-        Cliente = this.getActivity().getSharedPreferences("Cliente", Context.MODE_PRIVATE);
+        Cliente = getSharedPreferences("Cliente", MODE_PRIVATE);
         EditarCliente = Cliente.edit();
-        EditarUsuario.apply();
-
-        FuenteUno = Typeface.createFromAsset(getActivity().getAssets(), "fonts/uno.ttf");
-        FuenteDos = Typeface.createFromAsset(getActivity().getAssets(), "fonts/dos.ttf");
-        FuenteTres = Typeface.createFromAsset(getActivity().getAssets(), "fonts/tres.ttf");
-        FuenteCuatro = Typeface.createFromAsset(getActivity().getAssets(), "fonts/cuatro.ttf");
-
-        SocimaGestion = new BaseDatos(this.getActivity(), "SocimaGestion", null, 1);
+        SocimaGestion = new BaseDatos(this, "SocimaGestion", null, 1);
         db = SocimaGestion.getWritableDatabase();
-        int Contador = SocimaGestion.CantidadNoticias();
+        NombreCliente.setText("" + Cliente.getString("NombreCliente", "SIN CLIENTE"));
+        NombreCliente.setTypeface(FuenteDos);
 
-        View ly = inflater.inflate(R.layout.fragmento_vendedor, container, false);
-        Badg = (TextView) ly.findViewById(R.id.badg);
-        Badg.setText("" + Contador);
-        if (Contador > 0) {
-            Badg.setVisibility(View.VISIBLE);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewDiez = (RecyclerView) findViewById(R.id.recyclerviewDiez);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewDiez.setLayoutManager(layoutManager);
+
+        datos = apl();
+        adapter = new MyAdapterDiez(datos);
+        recyclerViewDiez.setAdapter(adapter);
+        actualizar();
+
+        TextView CorreoPerfil = (TextView) findViewById(R.id.Correo);
+        TextView TelefonoPerfil = (TextView) findViewById(R.id.Telefono);
+        TextView CreditoPerfil = (TextView) findViewById(R.id.CreditoPerfil);
+        TextView DireccionPerfil = (TextView) findViewById(R.id.DireccionPerfil);
+        String Correo = "", Telefono = "", Direccion = "", Creditop = "", CreditoMax = "", Coordenada = "";
+
+
+        Cursor Datos = db.rawQuery("SELECT Email, Telefono,Credito,Direccion,Ciudad,Region,CreditoMaximo,Coordenada from Mv_Cliente where CodigoCliente ="+Integer.parseInt(Cliente.getString("IDCliente", "0"))+"", null);
+        if (Datos.moveToFirst()) {
+            Correo = Datos.getString(0);
+            Telefono = Datos.getString(1);
+            Creditop = Datos.getString(2);
+            Direccion = ""+Datos.getString(3)+","+Datos.getString(4)+","+Datos.getString(5)+"";
+            CreditoMax = Datos.getString(6);
+            Coordenada = Datos.getString(7);
+
         }
-        Meta = (TextView) ly.findViewById(R.id.Meta);
-        Actual = (TextView) ly.findViewById(R.id.Actual);
+        Datos.close();
 
+        CorreoPerfil.setText(Correo);
+        TelefonoPerfil.setText(Telefono);
+        CreditoPerfil.setText(formateador.format(Double.parseDouble(Creditop)));
+        DireccionPerfil.setText(Direccion);
 
-        TxNoticias = (TextView) ly.findViewById(R.id.TxNoticia);
-        TxListaCliente = (TextView) ly.findViewById(R.id.TxListaCliente);
-        TxMeta = (TextView) ly.findViewById(R.id.TxMeta);
-        Noticias = (ImageView) ly.findViewById(R.id.ImgNoticias);
-        Clientes = (ImageView) ly.findViewById(R.id.ImgCliente);
-        TxNoticias.setTypeface(FuenteCuatro);
-        TxListaCliente.setTypeface(FuenteCuatro);
+        Mapa = (Button) findViewById(R.id.mapa);
+        final String finalCoordenada = Coordenada;
+        if(Coordenada == null ){
+            Mapa.setVisibility(View.INVISIBLE);
+        }else{
+            Mapa.setVisibility(View.VISIBLE);
+        }
 
-
-        Clientes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        Noticias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent I = new Intent(getActivity(), Noticias.class);
-                getActivity().startActivity(I);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-            }
-        });
-
-        Clientes.setOnClickListener(new View.OnClickListener() {
+        Mapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent In = new Intent(getActivity(), Cliente.class);
-                getActivity().startActivity(In);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("geo:" + finalCoordenada + "?z=16&q=" + finalCoordenada));
+                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(intent);
             }
         });
 
-        Vendedor = (TextView) ly.findViewById(R.id.TxVendedor);
-        Vendedor.setTypeface(FuenteUno);
-        TxMeta.setTypeface(FuenteCuatro);
-
-        Meta.setText("" + formateador.format(Usuario.getInt("Meta", 0)));
-        Cursor Cs = null;
-        Cs = db.rawQuery("SELECT Actual FROM Mv_Vendedor WHERE CodigoVendedor = "+ Usuario.getInt("CodigoVendedor", 0), null);
-        if (Cs.moveToFirst()) {
-            Actual.setText("" + formateador.format(Cs.getInt(0)));
-        }
-
-        Meta.setTypeface(FuenteCuatro);
-        Vendedor.setText(Usuario.getString("Nombre", "Vendedor"));
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewCuatro = (RecyclerView) ly.findViewById(R.id.recyclerviewCuatro);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewCuatro.setLayoutManager(layoutManager);
-        datos = apl();
-        adapter = new MyAdapterCuatro(datos);
-        recyclerViewCuatro.setAdapter(adapter);
-        actualizar();
-
-        return ly;
-
     }
 
+
+    @Override
     public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
     }
 
     void actualizar() {
@@ -162,48 +134,18 @@ public class FragmentoPerfilVendedor extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+
     ArrayList<ArrayList<String>> apl() {
+
 
         ArrayList<ArrayList<String>> outterArray = new ArrayList<>();
 
         int Con = 0;
         Cursor DetalleOrden;
+        int idcliente = Integer.parseInt(Cliente.getString("IDCliente", "0"));
 
-        int dia = 0,mes3 = 0;
-        String fechaActual = "";
-        String fecha5DiasAntes = "";
-        Calendar fecha = new GregorianCalendar();
-        int año = fecha.get(Calendar.YEAR);
-        String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
-        String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
-        String mes = "";
-
-        if(mes2.length() == 1){
-            mes = "0"  + mes2;
-        }else{
-            mes = mes2;
-        }
-        if(dia2.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-0" + dia;
-        }else{
-            dia = Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-" + dia;
-        }
-
-        if(dia2.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-0"+(Integer.parseInt(mes)-1)+"-0"+dia;
-        }else{
-            dia = 0 + Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-0"+(Integer.parseInt(mes)-1)+"-"+dia;
-        }
-
-        if (Usuario.getInt("Cargo", 0) == 1) {
-            DetalleOrden = db.rawQuery("SELECT * from Mv_Orden where FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"' ORDER BY FFI DESC, Estado ASC", null);
-        } else {
-            DetalleOrden = db.rawQuery("SELECT * from Mv_Orden where Vendedor =" + Usuario.getInt("CodigoVendedor", 0) + " AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"' ORDER BY FFI DESC, Estado ASC", null);
-        }
+        Log.d("INSERTAR", "SELECT * from Mv_Orden where idCliente =" + idcliente + " order by FFI DESC , Estado ASC");
+        DetalleOrden = db.rawQuery("SELECT  * from Mv_Orden where idCliente = " + idcliente + " order by FFI DESC , Estado ASC", null);
 
         DetalleOrden.moveToFirst();
         if (!DetalleOrden.isAfterLast()) {
@@ -211,17 +153,12 @@ public class FragmentoPerfilVendedor extends Fragment {
 
                 ArrayList<String> innerArray = new ArrayList<>();
                 innerArray.add(0, DetalleOrden.getString(0)); //OR
-                innerArray.add(1, DetalleOrden.getString(2)); //IDCLIENTE
-                Log.d("IDCLIENTEORDEN", DetalleOrden.getString(1));
+                innerArray.add(1, DetalleOrden.getString(0)); //IDCLIENTE
                 innerArray.add(2, DetalleOrden.getString(3)); //Direccion
-                //innerArray.add(2, DetalleOrden.getString(2)); //Direccion
 
-                //String idCliente = DetalleOrden.getString(1);
-                String idCliente = DetalleOrden.getString(2);
+                Integer idCliente = DetalleOrden.getInt(2);
                 String TipoPago = DetalleOrden.getString(6);
-                //String TipoPago = DetalleOrden.getString(3);
                 String Estado = "" + DetalleOrden.getInt(8);
-                //String Estado = "" + DetalleOrden.getInt(5);
                 String NombreCliente = "";
                 String EStado = "";
 
@@ -241,28 +178,32 @@ public class FragmentoPerfilVendedor extends Fragment {
                     case "4":
                         EStado = "Rechazada";
                         break;
+                    default:
+                        EStado = "Pendiente";
+                        break;
                 }
+
 
                 switch (TipoPago) {
                     case "bank_transfer":
                         TipoPago = "Transferencia";
                         break;
                 }
+
                 innerArray.add(3, TipoPago); //TipoPago
                 innerArray.add(4, "" + DetalleOrden.getInt(7)); //Total
-                innerArray.add(5, "" + DetalleOrden.getInt(8)); //Estado
-                innerArray.add(6, DetalleOrden.getString(9)); //FFI Fecha Ingreso
+                innerArray.add(5, "" + DetalleOrden.getInt(5)); //Estado
+                innerArray.add(6, ""); //FFI Fecha Ingreso
                 innerArray.add(7, DetalleOrden.getString(11)); //Comentario
                 innerArray.add(5, EStado); //Estado
-                innerArray.add(6, DetalleOrden.getString(9)); //FFI Fecha Ingreso
-                innerArray.add(7, DetalleOrden.getString(11)); //Comentario
+                innerArray.add(6, DetalleOrden.getString(9)); //FFI Fecha ingreso
 
                 Cursor Cliente = db.rawQuery("SELECT Nombre, Credito from Mv_Cliente where CodigoCliente =" + idCliente, null);
                 Cliente.moveToFirst();
                 if (!Cliente.isAfterLast()) {
                     do {
                         innerArray.add(8, Cliente.getString(0));
-                        innerArray.add(9, ""+Cliente.getInt(1));
+                        innerArray.add(9, "" + Cliente.getInt(1));
 
                     } while (Cliente.moveToNext());
                 }
@@ -281,14 +222,15 @@ public class FragmentoPerfilVendedor extends Fragment {
 
 
 
-    class MyAdapterCuatro extends RecyclerView.Adapter<MyAdapterCuatro.ViewHolder> {
+    class MyAdapterDiez extends RecyclerView.Adapter<MyAdapterDiez.ViewHolder> {
 
         public ArrayList<ArrayList<String>> mDatasetex;
 
 
-        public MyAdapterCuatro(ArrayList<ArrayList<String>> Adpx) {
+        public MyAdapterDiez(ArrayList<ArrayList<String>> Adpx) {
             super();
             this.mDatasetex = Adpx;
+
         }
 
         @Override
@@ -296,6 +238,10 @@ public class FragmentoPerfilVendedor extends Fragment {
             View view = View.inflate(viewGroup.getContext(), R.layout.detalle_tres, null);
             ViewHolder holder = new ViewHolder(view);
             return holder;
+        }
+
+
+        public void onBackPressed() {
         }
 
         @Override
@@ -316,7 +262,6 @@ public class FragmentoPerfilVendedor extends Fragment {
             viewHolder.EditarOrden.setVisibility(View.VISIBLE);
             viewHolder.VerOrden.setVisibility(View.VISIBLE);
 
-
             switch (stado) {
                 case "Pendiente":
                     viewHolder.EstadoLista.setBackgroundColor(getResources().getColor(R.color.demoextra_card_background_color1));
@@ -326,6 +271,7 @@ public class FragmentoPerfilVendedor extends Fragment {
                     viewHolder.ConfirmarOrden.setVisibility(View.GONE);
                     viewHolder.EliminarOrden.setVisibility(View.GONE);
                     viewHolder.EditarOrden.setVisibility(View.GONE);
+
                     break;
                 case "Enviada":
                     viewHolder.EstadoLista.setBackgroundColor(getResources().getColor(R.color.demoextra_card_background_color4));
@@ -340,7 +286,7 @@ public class FragmentoPerfilVendedor extends Fragment {
                     viewHolder.EditarOrden.setVisibility(View.GONE);
                     break;
                 case "Despachada":
-                    viewHolder.EstadoLista.setBackgroundColor(getResources().getColor(R.color.demoextra_card_background_color6));
+                    viewHolder.EstadoLista.setBackgroundColor(getResources().getColor(R.color.demoextra_card_background_color4));
                     viewHolder.ConfirmarOrden.setVisibility(View.GONE);
                     viewHolder.EliminarOrden.setVisibility(View.GONE);
                     viewHolder.EditarOrden.setVisibility(View.GONE);
@@ -351,21 +297,21 @@ public class FragmentoPerfilVendedor extends Fragment {
             viewHolder.VerOrden.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditarUsuario.putString("VerOrden",mDatasetex.get(i).get(0));
-                    EditarUsuario.putString("VerNombre",mDatasetex.get(i).get(8));
-                    EditarUsuario.putString("VerCodigo",mDatasetex.get(i).get(1));
-                    EditarUsuario.putString("VerCredito",mDatasetex.get(i).get(9));
+                    EditarUsuario.putString("VerOrden", mDatasetex.get(i).get(0));
+                    EditarUsuario.putString("VerNombre", mDatasetex.get(i).get(8));
+                    EditarUsuario.putString("VerCodigo", mDatasetex.get(i).get(1));
+                    EditarUsuario.putString("VerCredito", mDatasetex.get(i).get(9));
                     EditarUsuario.apply();
 
-                    Intent N =  new Intent(getActivity(),VerOrden.class);
-                    getActivity().startActivity(N);
+                    Intent N = new Intent(PerfilCliente.this, VerOrden.class);
+                    startActivity(N);
                 }
             });
 
             viewHolder.EditarOrden.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    new SweetAlertDialog(PerfilCliente.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("! Editar Orden! ")
                             .setContentText("Desea agregar & eliminar productos.!")
                             .setConfirmText("Aceptar!")
@@ -403,6 +349,7 @@ public class FragmentoPerfilVendedor extends Fragment {
                                     //Cursor Re = db.rawQuery("SELECT do.idProducto, do.Cantidad, do.Precio, p.Descuento, p.Modelo, o.DireccionFacturacion, o.DireccionEnvio, o.Comentario, o.idCliente FROM Mv_detalleOrden do JOIN Mv_Producto p ON (do.idProducto = p.idProducto) JOIN Mv_Orden o ON (do.idOrden = o.idOrden) WHERE do.idOrden = " + idOrden + "", null);
                                     Cursor Re = db.rawQuery("SELECT do.idProducto, do.Cantidad, do.Precio, p.Descuento, p.Modelo, o.DireccionFacturacion, o.DireccionEnvio, o.Comentario, o.idCliente FROM Mv_detalleOrden do JOIN Mv_Producto p ON (do.idProducto = p.idProducto) JOIN Mv_Orden o ON (do.idOrden = o.idOrden) WHERE do.idOrden = " + mDatasetex.get(i).get(0) + "", null);
 
+                                    //System.out.println("dato orden " +  Re.getCount());
                                     if (Re.moveToFirst()) {
                                         do {
                                             ArrayList<String> innerArray = new ArrayList<>();
@@ -426,6 +373,7 @@ public class FragmentoPerfilVendedor extends Fragment {
                                                     Con++;
                                                 }else{
                                                     int cantidad = OR.getInt(1) + 1;
+
                                                     String Sql = "Update Mv_Compra SET Cantidad =" + cantidad + "  where idOrdenCompra =" + idCompraN + "  and idProducto = " + Re.getInt(0) + "";
                                                     Log.d("STRINGSQLINSERTDESC", Sql);
                                                     db.execSQL(Sql);
@@ -453,7 +401,8 @@ public class FragmentoPerfilVendedor extends Fragment {
                                         }
                                         while (Re.moveToNext());
                                     }
-                                    Intent I = new Intent(getActivity(), CarroCompleto.class);
+
+                                    Intent I = new Intent(PerfilCliente.this, CarroCompleto.class);
                                     I.putExtra("test", cliente);
                                     startActivity(I);
                                     sDialog.cancel();
@@ -466,7 +415,7 @@ public class FragmentoPerfilVendedor extends Fragment {
             viewHolder.ConfirmarOrden.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    new SweetAlertDialog(PerfilCliente.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("! Confirmar Orden! ")
                             .setContentText("La orden, se enviara al sistema.!")
                             .setConfirmText("Aceptar!")
@@ -490,20 +439,16 @@ public class FragmentoPerfilVendedor extends Fragment {
                                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                 @Override
                                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-
                                                     //db.execSQL("update Mv_Orden set Estado = 1 where CodigoOrden = " + mDatasetex.get(i).get(0) + "");
                                                     db.execSQL("update Mv_Orden set Estado = 1 where IdOrden = " + mDatasetex.get(i).get(0) + "");
                                                     actualizar();
                                                     sDialog.cancel();
-
                                                 }
                                             })
                                             .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                 }
                             })
                             .show();
-
-
                 }
             });
 
@@ -512,8 +457,7 @@ public class FragmentoPerfilVendedor extends Fragment {
                 public void onClick(View view) {
 
 
-
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    new SweetAlertDialog(PerfilCliente.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Cancelar Pedido?")
                             .setContentText("Se eliminara la orden de compra!")
                             .setConfirmText("Eliminar!")
@@ -528,9 +472,10 @@ public class FragmentoPerfilVendedor extends Fragment {
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(final SweetAlertDialog sDialog) {
-                                    db.execSQL("Delete from Mv_Orden where idOrden =" + mDatasetex.get(i).get(0) + "");
-                                    db.execSQL("Delete from Mv_Compra where idOrdenCompra =" + mDatasetex.get(i).get(0) + "");
-                                    db.execSQL("Delete from Mv_DetalleOrden where idOrden = " + mDatasetex.get(i).get(0) + "");
+                                    //db.execSQL("Delete  from Mv_Orden where CodigoOrden =" + mDatasetex.get(i).get(0) + "");
+                                    db.execSQL("Delete  from Mv_Orden where idOrden =" + mDatasetex.get(i).get(0) + "");
+                                    db.execSQL("Delete  from Mv_Compra where idOrdenCompra =" + mDatasetex.get(i).get(0) + "");
+                                    db.execSQL("Delete  from Mv_DetalleOrden where idOrden = " + mDatasetex.get(i).get(0) + "");
 
                                     sDialog
                                             .setTitleText("Orden eliminada!")
@@ -590,4 +535,6 @@ public class FragmentoPerfilVendedor extends Fragment {
         }
 
     }
+
+
 }

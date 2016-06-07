@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.odril.socimagestionv02.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -232,7 +234,6 @@ public class Sistema extends ActionBarActivity {
         String AVendedores = null, AMenu = null, AProductos = null, AOrdenes = null, AClientes = null, ANoticias = null, AEstados = null, AMarcas = null;
 
         Httppostaux post;
-        //ActualizarDatos act;
 
         @Override
         protected void onPreExecute() {

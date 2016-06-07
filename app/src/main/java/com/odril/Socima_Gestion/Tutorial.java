@@ -1,4 +1,4 @@
-package com.odril.socimagestionv02;
+package com.odril.Socima_Gestion;
 
 import android.content.Context;
 import android.media.Image;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.odril.socimagestionv02.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

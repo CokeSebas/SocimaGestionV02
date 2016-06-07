@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.odril.socimagestionv02.BaseDatos;
+import com.odril.Socima_Gestion.BaseDatos;
 import com.odril.socimagestionv02.R;
 import com.squareup.picasso.Picasso;
 
