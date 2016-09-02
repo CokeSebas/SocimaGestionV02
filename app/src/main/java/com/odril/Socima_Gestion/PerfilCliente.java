@@ -80,6 +80,7 @@ public class PerfilCliente extends ActionBarActivity {
         TextView TelefonoPerfil = (TextView) findViewById(R.id.Telefono);
         TextView CreditoPerfil = (TextView) findViewById(R.id.CreditoPerfil);
         TextView DireccionPerfil = (TextView) findViewById(R.id.DireccionPerfil);
+        TextView CreditoTotal = (TextView) findViewById(R.id.CreditoTotal);
         String Correo = "", Telefono = "", Direccion = "", Creditop = "", CreditoMax = "", Coordenada = "";
 
 
@@ -98,6 +99,7 @@ public class PerfilCliente extends ActionBarActivity {
         CorreoPerfil.setText(Correo);
         TelefonoPerfil.setText(Telefono);
         CreditoPerfil.setText(formateador.format(Double.parseDouble(Creditop)));
+        CreditoTotal.setText(formateador.format(Double.parseDouble(CreditoMax)));
         DireccionPerfil.setText(Direccion);
 
         Mapa = (Button) findViewById(R.id.mapa);

@@ -143,7 +143,10 @@ public class FragmentoInformacionProductos extends Fragment {
             fecha5DiasAntes = año+"-"+2+"-"+(dia-5);
         }
 
+        //System.out.println("fecha 5 dias antes : " + fecha5DiasAntes);
+        //System.out.println("fecha actual: " + fechaActual);
 
+        //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto", null);
         //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0", null);
         Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0 AND FFA BETWEEN '" + fecha5DiasAntes + "' AND '" + fechaActual + "'", null);
         //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0 AND FFA BETWEEN '2015-11-01' AND '2015-11-31'", null);

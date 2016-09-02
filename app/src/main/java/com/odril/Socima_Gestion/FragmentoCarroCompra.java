@@ -254,14 +254,15 @@ public class FragmentoCarroCompra extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, int i) {
             TotalCompra.setText("Total Actual: $" + formateador.format(Double.parseDouble(String.valueOf(T))));
-            //TotalCompra.setText("Total Actual: $" + T);
-            CreditoDisponible.setText("Credito Disponible: $" + formateador.format(Double.parseDouble(Cliente.getString("CreditoCliente", "0"))));
+            //TotalCompra.setText("Total Actual: $" + T
+            //CreditoDisponible.setText("Credito Disponible: $" + formateador.format(Double.parseDouble(Cliente.getString("CreditoCliente", "0"))));
             //CreditoDisponible.setText("Credito Disponible: $" + Cliente.getString("CreditoCliente", "0"));
             Integer creditoMaximo = 0;
             Cursor cli = db.rawQuery("SELECT CreditoMaximo FROM Mv_cliente WHERE CodigoCliente = " + Cliente.getString("IDCliente", "0"), null);
             if(cli.moveToFirst()){
                 creditoMaximo = cli.getInt(0);
             }
+            CreditoDisponible.setText("Credito Disponible: $" + formateador.format(creditoMaximo));
             //CreditoMaximo.setText("Credito Maximo: $" + String.valueOf(creditoMaximo));
             //CreditoMaximo.setText("Credito Maximo: $" + formateador.format(Double.parseDouble(String.valueOf(creditoMaximo))));
 

@@ -66,7 +66,7 @@ public class BuscarCliente extends CursorAdapter {
     }
 
     private String CrearItem(Cursor cursor) {
-        String item = cursor.getString(1);
+        String item = cursor.getString(1)+" - "+cursor.getString(3);
         return item;
     }
 }

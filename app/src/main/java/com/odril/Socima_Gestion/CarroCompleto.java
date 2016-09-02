@@ -399,7 +399,7 @@ public class CarroCompleto extends ActionBarActivity {
                                                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                                                     FechaActual = df.format(date);
 
-
+                                                    //System.out.println("Dato id orden " +Cliente.getInt("OrdenCompra",0));
                                                     Cursor csn = db.rawQuery("select * from  Mv_Orden where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'", null);
 
                                                     if (csn.moveToFirst()) {
@@ -415,6 +415,9 @@ public class CarroCompleto extends ActionBarActivity {
                                                                         Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() +
                                                                         "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".", "")) + ",0,'" + FechaActual + "','"
                                                                         + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
+
+
+
 
 
                                                         Cursor Cs, Cs2 = null;
@@ -642,13 +645,17 @@ public class CarroCompleto extends ActionBarActivity {
 
 
                                                     } else {
+
+                                                        //System.out.println("dato id compra " +Cliente.getInt("OrdenCompra", 0));
+
                                                         db.execSQL("Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" + Cliente.getInt("OrdenCompra", 0) + "'," + Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() + "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".","")) + ",1,'" + FechaActual + "','" + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
+                                                        //System.out.println("dato sql " + "Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" + Cliente.getInt("OrdenCompra", 0) + "'," + Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() + "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".","")) + ",1,'" + FechaActual + "','" + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
 
                                                         Cursor Cs, Cs2 = null;
                                                         Cs = getIdOrden();
                                                         Cs2 = getDatosOrden();
 
-                                                        System.out.println("dato id orden " + Cs.getCount());
+                                                        //System.out.println("dato id orden nueva " + Cs.getCount());
                                                         if (Cs.moveToFirst()) {
                                                             System.out.println("dato id orden2 " + +Cs.getInt(0));
                                                         }
@@ -660,7 +667,8 @@ public class CarroCompleto extends ActionBarActivity {
                                                                 int descuento = Cs2.getInt(3);
                                                                 int total = cantidad * precio;
 
-                                                                System.out.println("dato id orden " + Cs.getInt(0));
+                                                                //System.out.println("dato id orden " + Cs.getInt(0));
+                                                                //System.out.println("dato id ultima orden " + Cliente.getInt("OrdenCompra",0));
 
                                                                 db.execSQL("Insert into Mv_DetalleOrden(idOrden,idProducto,Cantidad,Precio,Total) " +
                                                                         "values(" + Cs.getInt(0) + ", " + idProducto + ", " + cantidad + ", " + precio + ", " + total + ");");

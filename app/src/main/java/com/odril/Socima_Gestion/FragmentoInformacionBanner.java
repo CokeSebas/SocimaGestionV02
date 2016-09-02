@@ -113,12 +113,22 @@ System.out.println("banner 3 " + UTres + ' ' + ITres);*/
                     FragmentoAccion2.replace(R.id.CatalagoPrincipal, FragmentoCatalogo);
                     FragmentoAccion2.commit();
                     String Nombre = "";
-                    Cursor N = SocimaGestion.NombreMenuHijo(db, Integer.parseInt(IUno));
+                    //System.out.println("dato error "+ IUno);
+                    //if(IUno != ""){
+                    if(!IUno.equals("")){
+                        Cursor N = SocimaGestion.NombreMenuHijo(db, Integer.parseInt(IUno));
+                        if (N.moveToFirst()) {
+                            do {
+                                Nombre = N.getString(2);
+                            } while (N.moveToNext());
+                        }
+                    }
+                    /*Cursor N = SocimaGestion.NombreMenuHijo(db, Integer.parseInt(IUno));
                     if (N.moveToFirst()) {
                         do {
                             Nombre = N.getString(2);
                         } while (N.moveToNext());
-                    }
+                    }*/
                     EditarUsuario.putString("NombreSubCategoria", "" + Nombre);
                     EditarUsuario.putString("IDSubCategoria", "" + IUno);
                     EditarUsuario.apply();

@@ -15,7 +15,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     String SqlCategoriaProducto = "CREATE TABLE Mv_categoriaProducto(idProducto INTEGER, idCategoria INTEGER)";
     String SqlCliente = "CREATE TABLE Mv_Cliente(CodigoCliente INTEGER PRIMARY KEY, Nombre TEXT, Email TEXT, Telefono TEXT,Vendedor INTEGER,Credito INTEGER, Direccion TEXT, Ciudad TEXT,Region TEXT,Codigo TEXT, Rut TEXT, CreditoMaximo INTEGER, Coordenada TEXT)";
     String SqlNoticias = "CREATE TABLE Mv_Noticia(Titulo TEXT, Noticia TEXT, Estado INTEGER, Imagen TEXT)";
-    String SqlProducto = "CREATE TABLE Mv_Producto(idProducto INTEGER PRIMARY KEY, Modelo TEXT,Descripcion TEXT, CodigoProducto INTEGER, CodigoBodega TEXT, StockInicial INTEGER, Cantidad INTEGER, Precio INTEGER, Tam INTEGER, FFA TEXT,Descuento INTEGER, FFDI TEXT,FFDF TEXT, Tag TEXT, Imagen TEXT, MarcaId INTEGER, SortOrder INTEGER, Modificado TEXT)";
+    String SqlProducto = "CREATE TABLE Mv_Producto(idProducto INTEGER PRIMARY KEY, Modelo TEXT,Descripcion TEXT, CodigoProducto INTEGER, CodigoBodega TEXT, StockInicial INTEGER, Cantidad INTEGER, Precio INTEGER, Tam INTEGER, FFA TEXT,Descuento INTEGER, FFDI TEXT,FFDF TEXT, Tag TEXT, Imagen TEXT, MarcaId INTEGER, SortOrder INTEGER, Modificado TEXT, Image TEXT)";
     String SqlProductoRelacion = "CREATE TABLE Mv_ProductoRelacion(idProducto INTEGER,idRelacion INTEGER)";
     String SqlDetalleProducto = "CREATE TABLE Mv_DetalleProducto(idProducto INTEGER,idAtributo INTEGER, Atributo TEXT,Descripcion TEXT)";
     String SqlOrden = "CREATE TABLE Mv_Orden(IdOrden INTEGER PRIMARY KEY , CodigoOrden TEXT,idCliente INTEGER,DireccionFacturacion TEXT, CiudadPago TEXT, Region TEXT, TipoPago TEXT, Total INTEGER,Estado INTEGER, FFI TEXT,FFM TEXT, Comentario TEXT,Vendedor INTEGER, DireccionEnvio TEXT, dcto TEXT)";
@@ -25,7 +25,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     String SqlBanner = "CREATE TABLE Mv_Banner(BannerId INTEGER, Url TEXT, informacion TEXT)";
     String SqlEstado = "CREATE TABLE Mv_Estado(IdEstado INTEGER, Estado TEXT)";
     String SqlMarca = "CREATE TABLE Mv_Marca(IdMarca INTENGER, Nombre TEXT)";
-    String SqlImagenP = "CREATE TABLE Mv_ImagenP(IdProducto INTEGER, Imagen TEXT)";
+    String SqlImagenP = "CREATE TABLE IF NOT EXISTS Mv_ImagenP(IdProducto INTEGER, Imagen TEXT)";
 
 
     public BaseDatos(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -152,13 +152,12 @@ public class BaseDatos extends SQLiteOpenHelper {
         textSearch = textSearch.replace("'", "''");
         SQLiteDatabase db = getReadableDatabase();
         if(idVendedor == 1) {
-            return db.rawQuery("SELECT CodigoCliente as _id, Nombre, Credito" +
+            return db.rawQuery("SELECT CodigoCliente as _id, Nombre, Credito, Rut" +
                     " FROM Mv_Cliente " +
                     " WHERE Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%' ", null);
         }else{
-            return db.rawQuery("SELECT CodigoCliente as _id, Nombre, Credito" +
+            return db.rawQuery("SELECT CodigoCliente as _id, Nombre, Credito, Rut" +
                     " FROM Mv_Cliente " +
-                    //" WHERE Vendedor = " + idVendedor + " AND (Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%')", null);
                     " WHERE Nombre LIKE '%" + textSearch + "%' OR Rut LIKE '%" + textSearch + "%' ", null);
         }
     }

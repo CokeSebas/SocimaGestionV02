@@ -286,29 +286,30 @@ public class Sistema extends ActionBarActivity {
                     }
 
                     Cursor Cs, Cs2 = null;
-                    String CodigoOrden, IdCliente, DireccionF, TipoPago, Total, EstadoO, FFI, FFM, Comentario, VendedorO, DireccionE, ProductId, nombreP, cantidad, precio;
+                    String CodigoOrden, IdCliente, DireccionF, TipoPago, Total, Tipo, FFI, FFM, Comentario, VendedorO, DireccionE, ProductId, nombreP, cantidad, precio;
                     Cs = getOrdenesConfirmadas();
-                    //System.out.println("total ordenes confirmadas " + Cs.getCount());
+                    System.out.println("total ordenes confirmadas " + Cs.getCount());
                     if (Cs.moveToFirst()) {
                         do {
-                            CodigoOrden = Cs.getString(0);
+                            //CodigoOrden = Cs.getString(0);
+                            CodigoOrden = Cs.getString(1);
                             IdCliente = Cs.getString(2);
                             DireccionF = Cs.getString(3);
                             TipoPago = Cs.getString(6);
                             Total = Cs.getString(7);
-                            EstadoO = Cs.getString(8);
+                            Tipo = Cs.getString(8);
                             FFI = Cs.getString(9);
                             FFM = Cs.getString(10);
                             Comentario = Cs.getString(11);
                             VendedorO = Cs.getString(12);
                             DireccionE = Cs.getString(13);
 
-                            /*System.out.println("dato codigo orden " + CodigoOrden);
-                            System.out.println("dato id cliente " + IdCliente);
+                            //System.out.println("dato codigo orden " + CodigoOrden);
+                            /*System.out.println("dato id cliente " + IdCliente);
                             System.out.println("dato direccionF " + DireccionF);
-                            System.out.println("dato tipo pago " + TipoPago);
-                            System.out.println("dato estado " + EstadoO);
-                            System.out.println("dato FFI " + FFI);
+                            System.out.println("dato tipo pago " + TipoPago);*/
+                            //System.out.println("dato estado " + Tipo);
+                            /*System.out.println("dato FFI " + FFI);
                             System.out.println("dato FFM " + FFM);
                             System.out.println("dato comentario " + Comentario);
                             System.out.println("dato Vendedor " + VendedorO);
@@ -323,7 +324,7 @@ public class Sistema extends ActionBarActivity {
                             params.add(new BasicNameValuePair("direccionF", DireccionF));
                             params.add(new BasicNameValuePair("tipoP", TipoPago));
                             params.add(new BasicNameValuePair("total", Total));
-                            params.add(new BasicNameValuePair("estado", EstadoO));
+                            params.add(new BasicNameValuePair("status", Tipo));
                             params.add(new BasicNameValuePair("FFI", FFI));
                             params.add(new BasicNameValuePair("FFM", FFM));
                             params.add(new BasicNameValuePair("comentario", Comentario));
@@ -334,11 +335,11 @@ public class Sistema extends ActionBarActivity {
                             HttpResponse resp = httpClient.execute(Post);
                             HttpEntity ent = resp.getEntity();
                             String text = EntityUtils.toString(ent);
-                            //System.out.println("guardo : " + text);
+                            System.out.println("guardo : " + text);
 
                             int idOrden = Cs.getInt(0);
                             Cs2 = getDetalleOrden(idOrden);
-                            //System.out.println("total detalle orden " + Cs2.getCount());
+                            System.out.println("total detalle orden " + Cs2.getCount());
                             if(Cs2.moveToFirst()){
                                 do {
                                     ProductId = Cs2.getString(0);
@@ -361,7 +362,7 @@ public class Sistema extends ActionBarActivity {
                                     HttpResponse resp2 = httpClient.execute(Post);
                                     HttpEntity ent2 = resp2.getEntity();
                                     String text2 = EntityUtils.toString(ent2);
-                                    //System.out.println("guardo detalle orden : " + text2);
+                                    System.out.println("guardo detalle orden : " + text2);
 
                                 }while(Cs2.moveToNext());
 

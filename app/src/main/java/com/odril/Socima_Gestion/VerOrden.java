@@ -197,9 +197,10 @@ public class VerOrden extends ActionBarActivity  {
         if (v) {
             CreditoMaximoCl.setText("Sin Credito Disponible");
         } else {
+            //System.out.println("dato cl " +Usuario.getString("VerCodigo","0"));
             CreditoMaximoCl.setText("$" + formateador.format(Double.parseDouble(Usuario.getString("VerCredito","0"))));
         }
-
+        //CreditoMaximoCl.setText("Sin Credito Disponible");
 
 
         Button btnRepetir = (Button) findViewById(R.id.Repetir);
@@ -452,17 +453,17 @@ public class VerOrden extends ActionBarActivity  {
                     iva = iva * 19;
                     Log.d("Totaliva3", "" + s);
 
-                    TotalSinIva.setText("" + formateador.format(s));
+                    TotalSinIva.setText("" + formateador.format(T));
                     Iva.setText("" + formateador.format(iva) + "");
-
                     //TotalSinIva.setText("" + formateador.format(totaldcto));
-                    Total.setText("" + formateador.format(totaldcto));
+                    Total.setText("" + formateador.format(s));
+
                 } else {
                     totaldcto = T;
                     iva = totaldcto / 100;
                     Log.d("TotalIva2", "" + iva);
                     iva = iva * 19;
-                    final double s = totaldcto - (int) iva;
+                    final double s = totaldcto + (int) iva;
                     Log.d("Totaliva3", "" + s);
 
                     iva = totaldcto / 100;
@@ -470,22 +471,22 @@ public class VerOrden extends ActionBarActivity  {
                     iva = iva * 19;
                     Log.d("Totaliva3", "" + s);
 
-                    TotalSinIva.setText("" + formateador.format(s));
+                    TotalSinIva.setText("" + formateador.format(totaldcto));
                     Iva.setText("" + formateador.format(iva) + "");
-                    Total.setText("" + formateador.format(totaldcto));
+                    Total.setText("" + formateador.format(s));
                 }
             }else{
-                Total.setText("" + formateador.format(T));
+                //Total.setText("" + formateador.format(T));
                 if (T > 0) {
-
                     iva = (double) T / 100;
                     Log.d("TotalIva2", "" + iva);
                     iva = iva * 19;
-                    final int s = T - (int) iva;
+                    final int s = T + (int) iva;
                     Log.d("Totaliva3", "" + s);
 
-                    TotalSinIva.setText("" + formateador.format(s));
+                    TotalSinIva.setText("" + formateador.format(T));
                     Iva.setText("" + formateador.format(iva) + "");
+                    Total.setText("" + formateador.format(s));
                 }
             }
 

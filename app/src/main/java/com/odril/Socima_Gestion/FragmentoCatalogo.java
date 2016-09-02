@@ -348,9 +348,11 @@ public class FragmentoCatalogo extends Fragment {
 
             if (CantidadRecomendada.equals("")) {
                 CantidadRecomendada = "" + 0;
-            }
-
-            if (Integer.parseInt(CantidadRecomendada) > 0 && CantidadRecomendada != null) {
+            }/*else{
+                CantidadRecomendada = Math.round(Double.parseDouble(CantidadRecomendada));
+            }*/
+//System.out.println("dato error " + Math.round(Double.parseDouble(CantidadRecomendada)));
+            if (Math.round(Double.parseDouble(CantidadRecomendada)) > 0 && CantidadRecomendada != null) {
                 LinearLayout Rc = (LinearLayout) view.findViewById(R.id.Rc);
                 Rc.setVisibility(View.VISIBLE);
                 TextView CRec = (TextView) view.findViewById(R.id.CantidadRecomendada);

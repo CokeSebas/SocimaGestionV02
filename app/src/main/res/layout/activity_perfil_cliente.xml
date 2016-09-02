@@ -85,7 +85,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/Telefono"
             android:gravity="center_vertical|center_horizontal"
-            android:text="CREDITO DISPONIBLE: "
+            android:text="SALDO: "
             android:textColor="#FFF"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -102,11 +102,33 @@
 
 
         <TextView
-            android:id="@+id/TituloDireccion"
+            android:id="@+id/TituloCreditoTotal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/CreditoPerfil"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="CREDITO TOTAL: "
+            android:textColor="#FFF"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/CreditoTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/TituloCreditoTotal"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="$00000"
+            android:textColor="#FFF"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/TituloDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/CreditoTotal"
             android:gravity="center_vertical|center_horizontal"
             android:text="Direccion: "
             android:textColor="#FFF"

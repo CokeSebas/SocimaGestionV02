@@ -5,6 +5,7 @@
     android:background="#ff082308"
     android:clickable="true"
     android:focusableInTouchMode="true"
+    android:screenOrientation="landscape"
     tools:context="com.odril.Socima_Gestion.CarroCompleto">
 
     <RelativeLayout
