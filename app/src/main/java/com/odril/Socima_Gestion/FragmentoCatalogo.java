@@ -308,11 +308,16 @@ public class FragmentoCatalogo extends Fragment {
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
+            Ly = (LinearLayout) view.findViewById(R.id.LyEstados);
+            Ly.setBackgroundColor((Color.parseColor("#FFFFFF")));
+            tx = (TextView) view.findViewById(R.id.TextoEstado);
+            tx.setText("");
             int Paso = 0;
             //if (EstadoStock == 1) {
 
-            int porcentaje = (Integer.parseInt(StockInicial)*10/100);
+            int porcentaje = (Integer.parseInt(StockInicial)/10);
+            //int porcentaje = (Integer.parseInt(StockInicial)*10/100);
+
             if (Integer.parseInt(CantidadSk) < porcentaje) {
                 Ly = (LinearLayout) view.findViewById(R.id.LyEstados);
                 Ly.setBackgroundColor((Color.parseColor("#ffa3200a")));
@@ -332,13 +337,13 @@ public class FragmentoCatalogo extends Fragment {
                 tx = (TextView) view.findViewById(R.id.TextoEstado);
                 tx.setText("PRODUCTO NUEVO ");
                 Log.d("PRO", "PRODUCTO NUEVO");
-
             }
             TextView PCodigo = (TextView) view.findViewById(R.id.PCodigo);
             PCodigo.setText("#" + CodigoProducto);
             PCodigo.setTypeface(FuenteUno);
             TextView PModelo = (TextView) view.findViewById(R.id.PModelo);
-            PModelo.setText(Modelo);
+            //System.out.println("dato nombre producto " + Modelo.replace("Ã\u0091","Ñ"));
+            PModelo.setText(Modelo.replace("Ã\u0091","Ñ"));
             PCodigo.setTypeface(FuenteUno);
             TextView PDesc = (TextView) view.findViewById(R.id.PDesc);
             PDesc.setText(Desc);
@@ -420,7 +425,7 @@ public class FragmentoCatalogo extends Fragment {
             }
 
 
-            Cantidad.addTextChangedListener(new TextWatcher() {
+            /*Cantidad.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 }
@@ -441,12 +446,13 @@ public class FragmentoCatalogo extends Fragment {
                 public void afterTextChanged(Editable editable) {
 
                 }
-            });
+            });*/
             Cantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
                     if (!b && (Cantidad.getText().toString().equals("") | Cantidad.getText().toString().isEmpty())) {
                         Cantidad.setText("1");
+
                     }
                 }
             });
@@ -497,10 +503,12 @@ public class FragmentoCatalogo extends Fragment {
             btnMas.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-
+//System.out.println("data sk " + CantidadSk);
                     if (Cantidad.getText().toString().isEmpty() | Cantidad.getText().toString().equals("")) {
+                        //System.out.println("data 10");
                         Cantidad.setText("" + CantidadSk);
                     }
+                    //System.out.println("data 11");
                     Cantidad.setText("" + CantidadSk);
                     return true;
                 }
@@ -545,7 +553,7 @@ public class FragmentoCatalogo extends Fragment {
                                                 (ViewGroup) getActivity().findViewById(R.id.Custom));
                                         layout.setMinimumHeight(80);
                                         TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                        MensajeToast.setText("[ Sin Stock " + Modelo + "   ]");
+                                        MensajeToast.setText("[ Sin Stock " + Modelo.replace("Ã\u0091","Ñ") + "   ]");
                                         Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                         ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                         ts.setView(layout);
@@ -562,7 +570,7 @@ public class FragmentoCatalogo extends Fragment {
                                                         (ViewGroup) getActivity().findViewById(R.id.Custom));
                                                 layout.setMinimumHeight(80);
                                                 TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                                MensajeToast.setText("[ Sin Stock " + Modelo + "   ]");
+                                                MensajeToast.setText("[ Sin Stock " + Modelo.replace("Ã\u0091","Ñ") + "   ]");
                                                 Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                                 ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                                 ts.setView(layout);
@@ -577,7 +585,7 @@ public class FragmentoCatalogo extends Fragment {
                                                         (ViewGroup) getActivity().findViewById(R.id.Custom));
                                                 layout.setMinimumHeight(80);
                                                 TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                                MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo + " ] Agregados");
+                                                MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo.replace("Ã\u0091","Ñ") + " ] Agregados");
                                                 Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                                 ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                                 ts.setView(layout);
@@ -599,7 +607,7 @@ public class FragmentoCatalogo extends Fragment {
                                                         (ViewGroup) getActivity().findViewById(R.id.Custom));
                                                 layout.setMinimumHeight(80);
                                                 TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                                MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo + " ] Agregados");
+                                                MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo.replace("Ã\u0091","Ñ") + " ] Agregados");
                                                 Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                                 ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                                 ts.setView(layout);
@@ -627,7 +635,7 @@ public class FragmentoCatalogo extends Fragment {
                                             (ViewGroup) getActivity().findViewById(R.id.Custom));
                                     layout.setMinimumHeight(80);
                                     TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                    MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo + " ] Agregados");
+                                    MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo.replace("Ã\u0091","Ñ") + " ] Agregados");
                                     Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                     ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                     ts.setView(layout);
@@ -645,7 +653,7 @@ public class FragmentoCatalogo extends Fragment {
                                             (ViewGroup) getActivity().findViewById(R.id.Custom));
                                     layout.setMinimumHeight(80);
                                     TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                    MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo + " ] Agregados");
+                                    MensajeToast.setText("[ " + Cantidad.getText().toString() + "  " + Modelo.replace("Ã\u0091","Ñ") + " ] Agregados");
                                     Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                     ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                     ts.setView(layout);

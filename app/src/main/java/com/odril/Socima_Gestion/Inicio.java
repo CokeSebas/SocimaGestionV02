@@ -11,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +23,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.odril.socimagestionv02.R;
 
 import org.apache.http.HttpEntity;
@@ -42,8 +46,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
@@ -51,10 +58,7 @@ import java.util.TimerTask;
 import Adaptadores.Httppostaux;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
 public class Inicio extends ActionBarActivity {
-
-
     // Declaracion de Variables -------------------------------------------------------
 
     public static final int progress_bar_type = 0;
@@ -90,15 +94,17 @@ public class Inicio extends ActionBarActivity {
 
     // Funciones Privadas -----------------------------------------------------------------
     private ProgressDialog pDialog;
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
-
-
 
         // Asignacion de Variables -------------------------------------------------------
 
@@ -115,7 +121,6 @@ public class Inicio extends ActionBarActivity {
 
         // Logica del Sistema -----------------------------------------------------------
 
-
         //new DescargaImagen().onCancelled();
 
         if (Conexion) {
@@ -128,16 +133,12 @@ public class Inicio extends ActionBarActivity {
                 new Actualizacion().execute();
                 new DescargaImagen().execute();
             }
-        } else
-        {
-
+        } else {
             if (NuevoEquipo.equals("NO")) {
-
                 Timer Tiempo = new Timer();
                 Tiempo.schedule(ActividadLogin, 1500);
-
+                System.out.println("no inicia por que descarga imagenes esta activa");
             } else {
-
                 new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("ERROR !")
                         .setContentText("Debes estar conectado a internet la primera vez.!")
@@ -151,6 +152,9 @@ public class Inicio extends ActionBarActivity {
                         .show();
             }
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void Ms() {
@@ -180,72 +184,143 @@ public class Inicio extends ActionBarActivity {
         int año = fecha.get(Calendar.YEAR);
         String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
         String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
-        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
+        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH) - 5);
         String mes = "";
-        if(mes2.length() == 1){
-            mes = "0"  + mes2;
-        }else{
+        if (mes2.length() == 1) {
+            mes = "0" + mes2;
+        } else {
             mes = mes2;
         }
 
-        if(dia2.length() == 1){
+        if (dia2.length() == 1) {
             dia = 0 + Integer.parseInt(dia2);
             fechaActual = año + "-" + mes + "-0" + dia;
-        }else{
+        } else {
             dia = Integer.parseInt(dia2);
             fechaActual = año + "-" + mes + "-" + dia;
         }
 
-        if(dia3.length() == 1){
+        if (dia3.length() == 1) {
             dia = 0 + Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
-        }else{
+            fecha5DiasAntes = año + "-" + mes + "-0" + (dia - 5);
+        } else {
             dia = Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
+            fecha5DiasAntes = año + "-" + mes + "-" + (dia - 5);
         }
+
         //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1", null);
         //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1 AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
-        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
+        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE FFI BETWEEN '" + fecha5DiasAntes + "' AND '" + fechaActual + "'", null);
 
     }
+
     public Cursor getDetalleOrden(int idOrden) {
         return DB.rawQuery("SELECT do.idProducto, do.Cantidad, do.Precio, p.Descuento, p.Modelo FROM Mv_detalleOrden do JOIN Mv_Producto p ON (do.idProducto = p.idProducto) WHERE do.idOrden = " + idOrden + "", null);
     }
 
-    /*public Cursor getOrdenesPendientes(){
-        int dia = 0;
-        String fechaActual = "";
-        String fecha5DiasAntes = "";
-        Calendar fecha = new GregorianCalendar();
-        int año = fecha.get(Calendar.YEAR);
-        String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
-        String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
-        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
-        String mes = "";
-        if(mes2.length() == 1){
-            mes = "0"  + mes2;
-        }else{
-            mes = mes2;
-        }
+    public Boolean isOnlineNet() {
+        if(isNetworkAvailable()) {
+            try {
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpPost Post = new HttpPost("http://socimagestion.com/admin");
+                HttpResponse Response = httpClient.execute(Post);
+                int Status = Response.getStatusLine().getStatusCode();
+                if (Status == 200) {
+                    System.out.println("dato si conecta socimagestion");
+                    return true;
+                }else{
+                    System.out.println("dato no conecta socimagestion");
+                    return false;
+                }
 
-        if(dia2.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-0" + dia;
-        }else{
-            dia = Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-" + dia;
+                /*Process p = Runtime.getRuntime().exec("ping -c 1 www.google.cl");
+                int val = p.waitFor();
+                boolean reachable = (val == 0);
+                System.out.println("dato isOnlinNet " + val);
+                System.out.println("dato isOnlinNet2 " + reachable);
+                return reachable;*/
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return false;
         }
+        return false;
+    }
 
-        if(dia3.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
+    private Boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
+    public Boolean hasInternet(){
+        if(isNetworkAvailable()){
+            try{
+                HttpURLConnection urlc =(HttpURLConnection)(new URL("http://socimagestion.com/admin").openConnection());
+                urlc.setRequestProperty("User-Agent","Test");
+                urlc.setRequestProperty("Connection","close");
+                urlc.setConnectTimeout(1500);
+                //urlc.connect();
+                return (urlc.getResponseCode() == 200);
+            }catch(IOException e){
+                Log.e("LOG_TAG", "No tiene conexion a la pagina",e);
+            }
         }else{
-            dia = Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
+            Log.e("LOG_TAG", "Not netwotk available");
         }
-        //return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1", null);
-        return DB.rawQuery("SELECT * FROM Mv_Orden WHERE Estado = 1 AND FFI BETWEEN '" + fecha5DiasAntes +  "' AND '" + fechaActual +"'", null);
-    }*/
+        return false;
+    }
+
+    public class Planificador {
+        Timer timer;
+        int counter1 = 0;
+        Date fecha;
+        boolean finTarea = false;
+
+        public Planificador () {
+//se crea un planificador que planificara 2 tareas
+            timer = new Timer ( ) ;
+//la Tarea1 se ejecuta pasado 5 minutos y luego periódicamente cada 5 minutos
+            //timer.schedule ( new Tarea1 () , 10000, 10000) ;
+            timer.schedule ( new Tarea1 () , 30000, 100000) ;
+            //timer.schedule ( new Tarea1 () , 300000, 300000) ;
+        }
+        //cuando el contador llega a 10 se desplanifica la tarea
+        class Tarea1 extends TimerTask {
+            public void run ( ) {
+                System.out.println("verifica internet cada 5 minutos") ;
+                if (counter1 < 5){
+                    //System.out.println ( "El contador tiene valor: "+ counter1) ;
+                    //counter1++;
+                    //hasInternet();
+                    if (isOnlineNet()) {
+                        System.out.println("dato si tiene internet");
+                        new DescargaImagen().doInBackground();
+                        this.cancel();
+                        finTarea = true;
+                    }else {
+                        System.out.println("dato no tiene conexion a internet");
+                    }
+                }
+                else{
+//Si la otra tarea ya ha acabado mata al planificador
+                    if (finTarea){
+                        System.out.println ( "Fin Planificador") ;
+                        timer.cancel();
+                    }
+//Si la otra tarea todavia no ha acabado solo se desplanifica, el
+//planificador sigue funcionando
+                    else{
+                        //System.out.println ( "Fin Tarea1") ;
+                        this.cancel () ;
+                        //System.out.println ( "Tarea1 desplanificada." ) ;
+                        finTarea = true;
+                    }
+                }
+            }
+        }
+    }
 
 //ACTUALIZACION DE DATOS --------------------------------------------------------------
 
@@ -304,7 +379,41 @@ public class Inicio extends ActionBarActivity {
                     String CodigoOrden, IdCliente, DireccionF, TipoPago, Total, EstadoO, FFI, FFM, Comentario, VendedorO, DireccionE, ProductId, nombreP, cantidad, precio, dcto;
                     Cs = getOrdenesConfirmadas();
 
-                    //System.out.println("total ordenes confirmadas " + Cs.getCount());
+
+                    /*int dia = 0;
+                    String fechaActual = "";
+                    String fecha5DiasAntes = "";
+                    Calendar fecha = new GregorianCalendar();
+                    int año = fecha.get(Calendar.YEAR);
+                    String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
+                    String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
+                    String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
+                    String mes = "";
+                    if(mes2.length() == 1){
+                        mes = "0"  + mes2;
+                    }else{
+                        mes = mes2;
+                    }
+
+                    if(dia2.length() == 1){
+                        dia = 0 + Integer.parseInt(dia2);
+                        fechaActual = año + "-" + mes + "-0" + dia;
+                    }else{
+                        dia = Integer.parseInt(dia2);
+                        fechaActual = año + "-" + mes + "-" + dia;
+                    }
+
+                    if(dia3.length() == 1){
+                        dia = 0 + Integer.parseInt(dia2);
+                        fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
+                    }else{
+                        dia = Integer.parseInt(dia2);
+                        fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
+                    }
+                    System.out.println("dato fecha actual " + fechaActual);
+                    System.out.println("dato fecha 5 días antes " + fecha5DiasAntes);*/
+
+                    System.out.println("dato total ordenes confirmadas " + Cs.getCount());
                     if (Cs.moveToFirst()) {
                         do {
                             //CodigoOrden = Cs.getString(0);
@@ -320,19 +429,6 @@ public class Inicio extends ActionBarActivity {
                             VendedorO = Cs.getString(12);
                             DireccionE = Cs.getString(13);
                             dcto = Cs.getString(14);
-
-                            System.out.println("dato codigo orden " + CodigoOrden);
-                            /*System.out.println("dato id cliente " + IdCliente);
-                            System.out.println("dato direccionF " + DireccionF);
-                            System.out.println("dato tipo pago " + TipoPago);*/
-                            System.out.println("dato estado " + EstadoO);
-                            /*System.out.println("dato total " + Total);
-                            System.out.println("dato FFI " + FFI);
-                            System.out.println("dato FFM " + FFM);
-                            System.out.println("dato comentario " + Comentario);
-                            System.out.println("dato Vendedor " + VendedorO);
-                            System.out.println("dato DireccionE " + DireccionE);
-                            System.out.println("dato Dcto " + dcto);*/
 
                             httpClient = new DefaultHttpClient();
                             Post = new HttpPost("http://socimagestion.com/Movil/Datos/ActualizarOrden.php");
@@ -355,18 +451,17 @@ public class Inicio extends ActionBarActivity {
                             HttpResponse resp = httpClient.execute(Post);
                             HttpEntity ent = resp.getEntity();
                             String text = EntityUtils.toString(ent);
-                            //System.out.println("guardo : " + text);
+                            System.out.println("guardo : " + text);
                             handler.post(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_LONG).show();
                                 }
                             });
 
                             int idOrden = Cs.getInt(0);
                             Cs2 = getDetalleOrden(idOrden);
                             //System.out.println("total detalle orden " + Cs2.getCount());
-                            if(Cs2.moveToFirst()){
+                            if (Cs2.moveToFirst()) {
                                 do {
                                     ProductId = Cs2.getString(0);
                                     nombreP = Cs2.getString(4);
@@ -390,10 +485,10 @@ public class Inicio extends ActionBarActivity {
                                     String text2 = EntityUtils.toString(ent2);
                                     //System.out.println("guardo detalle orden : " + text2);
 
-                                }while(Cs2.moveToNext());
+                                } while (Cs2.moveToNext());
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_LONG).show();
 
                                     }
                                 });
@@ -504,7 +599,7 @@ public class Inicio extends ActionBarActivity {
                                         }
                                         handler.post(new Runnable() {
                                             public void run() {
-                                                Toast.makeText(getApplicationContext(), "Actualizando Vendedores.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Actualizando Vendedores.", Toast.LENGTH_LONG).show();
                                                 EditarConfiguracionGeneral.putString("AVendedores", "" + Vendedores);
                                                 EditarConfiguracionGeneral.apply();
 
@@ -514,7 +609,7 @@ public class Inicio extends ActionBarActivity {
                                 } else {
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR VENDEDORES.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR VENDEDORES.", Toast.LENGTH_LONG).show();
                                         }
                                     });
                                 }
@@ -630,7 +725,7 @@ public class Inicio extends ActionBarActivity {
 
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(getApplicationContext(), "Actualizando Menu.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Menu.", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AMenu", "" + Menu);
                                             EditarConfiguracionGeneral.apply();
 
@@ -640,7 +735,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR MENUS.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR MENUS.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -748,7 +843,7 @@ public class Inicio extends ActionBarActivity {
                                                     DB.execSQL("Delete from Mv_ProductoRelacion where idRelacion =" + Integer.parseInt(Producto.getString("idProducto")) + "");
                                                     DB.execSQL("Delete from Mv_DetalleProducto where idProducto =" + Integer.parseInt(Producto.getString("idProducto")) + "");
                                                 } else {*/
-                                                String SqlProduco = " Insert into Mv_Producto(idProducto,Modelo,Descripcion,CodigoProducto,CodigoBodega,StockInicial,Cantidad,Precio,Tam,FFA,Descuento,FFDI,FFDF,Tag,Imagen,MarcaId,SortOrder,Modificado,Image) " +
+                                                String SqlProduco = " Insert into Mv_Producto(idProducto,Modelo,Descripcion,CodigoProducto,CodigoBodega,StockInicial,Cantidad,Precio,Tam,FFA,Descuento,FFDI,FFDF,Tag,Imagen,MarcaId,SortOrder,Modificado,Image,Agotado) " +
                                                         "values("
                                                         + Integer.parseInt(Producto.getString("idProducto")) + ",'"
                                                         + Producto.getString("Modelo").trim() + "','"
@@ -767,13 +862,14 @@ public class Inicio extends ActionBarActivity {
                                                         + "NO', '" + Producto.getString("Marca").trim() + "', '"
                                                         + Producto.getString("Sort_order").trim() + "', '"
                                                         + Producto.getString("Modificado").trim() + "', '"
-                                                        + Producto.getString("Image").trim() + "');";
+                                                        + Producto.getString("Image").trim() + "', '"
+                                                        + Producto.getString("Agotado").trim() + "');";
                                                 DB.execSQL(SqlProduco);
                                                 //System.out.println("dato guardo producto");
                                                 publishProgress("" + i);
 
                                                 if (NuevoEquipo.equals("SI")) {
-                                                    String SqlImagenP = "INSERT INTO Mv_ImagenP (idProducto, Imagen) VALUES ("+Integer.parseInt(Producto.getString("idProducto"))+",'NO');";
+                                                    String SqlImagenP = "INSERT INTO Mv_ImagenP (idProducto, Imagen) VALUES (" + Integer.parseInt(Producto.getString("idProducto")) + ",'NO');";
                                                     DB.execSQL(SqlImagenP);
                                                     //System.out.println("dato guardo producto 2");
                                                 }
@@ -784,10 +880,10 @@ public class Inicio extends ActionBarActivity {
                                                 Log.d("Error:", "" + e.getMessage());
                                             }
                                             //System.out.println("dato descuento " + Producto.getString("Descuento"));
-                                            if(Integer.parseInt(Producto.getString("Descuento")) != 0){
+                                            if (Integer.parseInt(Producto.getString("Descuento")) != 0) {
                                                 pdcto += 1;
                                                 //System.out.println("dato descuento suma 1");
-                                            }else{
+                                            } else {
                                                 pdcto += 0;
                                                 //System.out.println("dato descuento suma 0");
                                             }
@@ -823,7 +919,7 @@ public class Inicio extends ActionBarActivity {
 
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(getApplicationContext(), "Actualizando Productos.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Productos.", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AProductos", "" + Productos);
                                             EditarConfiguracionGeneral.apply();
 
@@ -831,7 +927,7 @@ public class Inicio extends ActionBarActivity {
                                     });
 
                                     //System.out.println("dato dcto " + pdcto);
-                                    if(pdcto !=0){
+                                    if (pdcto != 0) {
                                         NotificationCompat.Builder mBuilder =
                                                 new NotificationCompat.Builder(Inicio.this)
                                                         .setSmallIcon(R.drawable.icono_socima48)
@@ -884,7 +980,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR PRODUCTOS.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR PRODUCTOS.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -926,15 +1022,15 @@ public class Inicio extends ActionBarActivity {
                                             try {
 
                                                 int estado = 0;
-                                                if(TOrden.getInt("Estado") == 1){
+                                                if (TOrden.getInt("Estado") == 1) {
                                                     estado = 0;
-                                                }else if(TOrden.getInt("Estado") == 2){
+                                                } else if (TOrden.getInt("Estado") == 2) {
                                                     estado = 1;
-                                                }else if(TOrden.getInt("Estado") == 5){
+                                                } else if (TOrden.getInt("Estado") == 5) {
                                                     estado = 1;
-                                                }else if(TOrden.getInt("Estado") == 15){
+                                                } else if (TOrden.getInt("Estado") == 15) {
                                                     estado = 2;
-                                                }else if(TOrden.getInt("Estado") == 16){
+                                                } else if (TOrden.getInt("Estado") == 16) {
                                                     estado = 4;
                                                 }
 
@@ -998,7 +1094,7 @@ public class Inicio extends ActionBarActivity {
 
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Ordenes.", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AOrdenes", "" + Ordenes);
                                             EditarConfiguracionGeneral.apply();
                                         }
@@ -1031,7 +1127,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR ORDENES.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR ORDENES.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -1086,7 +1182,7 @@ public class Inicio extends ActionBarActivity {
                                                         TCliente.getString("CreditoMaximo") + ");";*/
 
                                                 //System.out.println("dato coordenada " + TCliente.getString("fax").length());
-                                                if(TCliente.getString("fax").length() != 0){
+                                                if (TCliente.getString("fax").length() != 0) {
                                                     //System.out.println("dato coordenada " + TCliente.get("fax"));
                                                     SqlInsertCliente = " Insert into Mv_Cliente(CodigoCliente,Nombre,Email,Telefono,Vendedor,Credito,Direccion,Ciudad,Region,Codigo, Rut, CreditoMaximo, Coordenada) " +
                                                             "values(" + Integer.parseInt(TCliente.getString("CodigoCliente"))
@@ -1101,10 +1197,10 @@ public class Inicio extends ActionBarActivity {
                                                             TCliente.getString("Codigo") + "','" +
                                                             TCliente.getString("Rut") + "'," +
                                                             TCliente.getString("CreditoMaximo") + ",'" +
-                                                            TCliente.getString("fax")+ "');";
+                                                            TCliente.getString("fax") + "');";
                                                     DB.execSQL(SqlInsertCliente);
                                                     //System.out.println("dato guardo cliente con coordenada");
-                                                }else{
+                                                } else {
                                                     //System.out.println("dato coordenada nulo");
                                                     SqlInsertCliente = " Insert into Mv_Cliente(CodigoCliente,Nombre,Email,Telefono,Vendedor,Credito,Direccion,Ciudad,Region,Codigo, Rut, CreditoMaximo) " +
                                                             "values(" + Integer.parseInt(TCliente.getString("CodigoCliente"))
@@ -1133,7 +1229,7 @@ public class Inicio extends ActionBarActivity {
                                     }
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            Toast.makeText(getApplicationContext(), "Actualizando Clientes.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Clientes.", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AClientes", "" + Clientes);
                                             EditarConfiguracionGeneral.apply();
 
@@ -1143,7 +1239,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR CLIENTES.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR CLIENTES.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -1188,7 +1284,7 @@ public class Inicio extends ActionBarActivity {
                                             } else {
                                                 Images = TNotas.getString("Imagen").trim();
                                                 Log.d("IMAGENNOTICIA", "Noticia" + (i + 1));
-//
+
                                                 String Nombre = "Noticia" + (i + 1) + ".jpg";
                                                 try {
                                                     File root = new File(Environment.getExternalStorageDirectory() + "/SocimaGestion");
@@ -1346,7 +1442,7 @@ public class Inicio extends ActionBarActivity {
 
                                     handler.post(new Runnable() {
                                                      public void run() {
-                                                         Toast.makeText(getApplicationContext(), "Actualizando Noticias", Toast.LENGTH_SHORT).show();
+                                                         Toast.makeText(getApplicationContext(), "Actualizando Noticias", Toast.LENGTH_LONG).show();
                                                          EditarConfiguracionGeneral.putString("ANoticias", "" + Noticias);
                                                          EditarConfiguracionGeneral.apply();
                                                      }
@@ -1356,7 +1452,7 @@ public class Inicio extends ActionBarActivity {
                                     NotificationCompat.Builder mBuilder =
                                             new NotificationCompat.Builder(Inicio.this)
                                                     .setSmallIcon(R.drawable.icono_socima48)
-                                                    .setLargeIcon((((BitmapDrawable)getResources()
+                                                    .setLargeIcon((((BitmapDrawable) getResources()
                                                             .getDrawable(R.drawable.icono_socima48)).getBitmap()))
                                                     .setContentTitle("Nuevas Noticias")
                                                     .setContentText("Nuevas Noticias en el Sistema")
@@ -1381,7 +1477,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR NOTICIAS.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR NOTICIAS.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -1436,7 +1532,7 @@ public class Inicio extends ActionBarActivity {
                                     handler.post(new Runnable() {
                                         public void run() {
 
-                                            Toast.makeText(getApplicationContext(), "Actualizando Estados..", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Estados..", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AEstados", "" + Estados);
                                             EditarConfiguracionGeneral.apply();
                                         }
@@ -1445,7 +1541,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR ESTADOS.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR ESTADOS.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -1486,17 +1582,20 @@ public class Inicio extends ActionBarActivity {
                                                         + Integer.parseInt(Tmarca.getString("marca_id")) + ",'"
                                                         + Tmarca.getString("nombre") + "');";
                                                 DB.execSQL(SqlMarca);
-                                                //System.out.println("dato guardo marcas");
+                                                //System.out.println("dato guardo marcas " + Tmarca.getString("nombre"));
                                             } catch (Exception e) {
                                                 Log.d("Error:", "" + e.getMessage());
                                             }
                                             //////////////////////imagen marca
                                             try {
-                                                String Url = "";
+                                                String Url, Dir = "";
                                                 String Informacion = "";
                                                 File Archivo = null;
-                                                Url = "http://socimagestion.com/image/data/"+Tmarca.getString("nombre")+".png";
+                                                Dir = Tmarca.getString("image").replace(" ", "%20");
+                                                Url = "http://socimagestion.com/image/" + Dir;
+                                                //Url = "http://socimagestion.com/image/data/"+Tmarca.getString("nombre")+".png";
                                                 String Nombre = Tmarca.getString("nombre") + ".png";
+                                                //System.out.println("dato url marca imagen " + Url);
                                                 try {
                                                     File root = new File(Environment.getExternalStorageDirectory() + "/SocimaGestion");
                                                     if (root.exists() && root.isDirectory()) {
@@ -1548,7 +1647,7 @@ public class Inicio extends ActionBarActivity {
                                     handler.post(new Runnable() {
                                         public void run() {
 
-                                            Toast.makeText(getApplicationContext(), "Actualizando Marcas..", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Actualizando Marcas..", Toast.LENGTH_LONG).show();
                                             EditarConfiguracionGeneral.putString("AMarcas", "" + Marcas);
                                             EditarConfiguracionGeneral.apply();
                                         }
@@ -1557,7 +1656,7 @@ public class Inicio extends ActionBarActivity {
                             } else {
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR MARCAS.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR AL ACTUALIZAR MARCAS.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -1579,7 +1678,6 @@ public class Inicio extends ActionBarActivity {
             }
             return false;
         }
-
 
 
         @Override
@@ -1624,18 +1722,18 @@ public class Inicio extends ActionBarActivity {
             //super.onPreExecute();
             //super.cancel(true);
 
-            if(g.getRunning() == true){
+            if (g.getRunning() == true) {
                 super.onPreExecute();
-            }else{
+            } else {
                 DescargaImagen.this.cancel(true);
                 DescargaImagen.this.onCancelled();
                 super.cancel(true);
             }
             new SweetAlertDialog(Inicio.this, SweetAlertDialog.PROGRESS_TYPE)
                     .setTitleText("¡Aviso!")
-                    .setContentText("Se estan actualizando los datos")
+                    .setContentText("Se estan actualizando los datos, favor esperar a que se complete")
                     .show();
-            BDSocima = new BaseDatos(getApplicationContext(), "SocimaGestion", null, 1);
+            //BDSocima = new BaseDatos(getApplicationContext(), "SocimaGestion", null, 1);
 
         }
 
@@ -1646,84 +1744,223 @@ public class Inicio extends ActionBarActivity {
 
             DB = BDSocima.getWritableDatabase();
             if (DB != null) {
+//////////////actualizar imagenes///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                if (!NuevoEquipo.equals("SI")) {
+                    Cursor C2 = null;
+                    C2 = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE p.Modificado = 'TRUE' ORDER BY p.idProducto DESC", null);
+                    System.out.println("cantidad imagenes actualizadas " + C2.getCount());
+                    if (C2.moveToFirst()) {
+                        do {
+                            if (isCancelled()) break;
+                            for (int i = 2; i < 8; i++) {
+                                String data = C2.getString(2);
+                                String[] info = data.split("\\.");
+                                String Nombre = "";
+                                String Nombre4 = "";
+                                String url8 = "";
+                                if (info.length == 2) {
+                                    Nombre = C2.getInt(0) + "_" + i + ".jpg";
+                                    Nombre4 = C2.getInt(0) + "_" + i + "-500x500." + info[1];
+                                    String[] info2 = info[0].split("/");
+                                    if (Nombre4.length() == 19) {
+                                        Nombre4 = "0" + Nombre4;
+                                    }
 
-                Cursor C = DB.rawQuery("Select idProducto, Imagen, Image from Mv_Producto", null);
-                //Cursor C = DB.rawQuery("Select p.idProducto, p.Imagen, p.Image from Mv_Producto p JOIN Mv_categoriaProducto cp WHERE cp.idCategoria = 1520 ", null);
-                //Cursor C = DB.rawQuery("Select idProducto, Imagen, Image from Mv_Producto LIMIT 75", null);
-                ///Cursor C = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE ip.Imagen != 'SI'",null);
-                //Cursor C = DB.rawQuery("Select idProducto, Imagen, Image  from Mv_Producto WHERE idProducto IN (142294,142305,142333,142400,142402,204444,204447,204465,204483,204520,204522,204523,271680,271681,271682,272099,272100,272101,272102,272104,272105,272106,272107,272108,272121,272123,272124,272132,272134,272135,272136,275897,275898,276534,281002,281083,281084,284205,284218,284220,284221,284234,284235,284245,284250,284263,284264,284272,284273,284275,284281,284285,284288,284296,284301,284317,284318,284319,284320,284321,284323,284324,284330,284331,284333,284334,284335,284336,284339,284340,284341,284342,284343,284344,284345,284346,284347,284348,284349,284360,284361,284362,284363,284364,284365,284366,284367,284368,284369,284393,284500,284516,284517,284518,284536,284537,284543,284549,284550,284554,284557,284562,284565,284566,284575,284576,284579,284580,284581,284582,284583,284588,284589,284592,284593,204446,204484,204505,284287)", null);
-                //Cursor C = DB.rawQuery("Select idProducto, Imagen, Image from Mv_Producto WHERE idProducto = 204456", null);
+                                    if (Nombre.length() == 11) {
+                                        Nombre = "0" + Nombre;
+                                    }
+                                    if (info2.length == 2) {
+                                        if (NuevoEquipo.equals("SI")) {
+                                            url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
+                                        } else {
+                                            url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + Nombre4;
+                                        }
+                                    } else {
+                                        if (NuevoEquipo.equals("SI")) {
+                                            url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
+                                        } else {
+                                            url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + info2[1] + "/" + Nombre4;
+                                        }
+                                    }
+                                } else if (info.length == 3) {
+                                    Nombre = C2.getInt(0) + "_" + i + ".jpg";
+                                    Nombre4 = C2.getInt(0) + "_" + i + "." + info[1] + "-500x500." + info[2];
+                                    String[] info2 = info[0].split("/");
+                                    if (Nombre4.length() == 23) {
+                                        Nombre4 = "0" + Nombre4;
+                                    }
+                                    if (Nombre.length() == 11) {
+                                        Nombre = "0" + Nombre;
+                                    }
+                                    if (info2.length == 2) {
+                                        if (NuevoEquipo.equals("SI")) {
+                                            url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
+                                        } else {
+                                            url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + Nombre4;
+                                        }
+                                    } else {
+                                        if (NuevoEquipo.equals("SI")) {
+                                            url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
+                                        } else {
+                                            url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + info2[1] + "/" + Nombre4;
+                                        }
+                                    }
+                                }
+                                try {
+                                    File root = new File(Environment.getExternalStorageDirectory() + "/SocimaGestion");
+                                    if (root.exists() && root.isDirectory()) {
+
+                                    } else {
+                                        root.mkdir();
+                                    }
+                                    if (Nombre.length() == 11) {
+                                        Nombre = "0" + Nombre;
+                                    }
+                                    //System.out.println("url : " + url8);
+                                    File Imagen = new File(root + "/" + Nombre);
+                                    //System.out.println("imagen : " + Imagen.exists() + " " + Nombre);
+                                    Imagen.delete();
+                                    HttpClient httpClient8 = new DefaultHttpClient();
+                                    HttpGet httpGet8 = new HttpGet(url8);
+                                    HttpResponse response8 = httpClient8.execute(httpGet8);
+                                    if (response8.getStatusLine().getStatusCode() == 200) {
+                                        Log.d("IMAGEN", "actualizando " + Nombre4);
+                                        String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C2.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        System.out.println("Descargando imagen nueva " + url8);
+                                        try {
+                                            HttpEntity entity8 = response8.getEntity();
+                                            InputStream inputStream = entity8.getContent();
+                                            Boolean status = Imagen.createNewFile();
+                                            FileOutputStream fileOutputStream = new FileOutputStream(Imagen);
+                                            byte[] buffer = new byte[1024];
+                                            long total = 0;
+                                            int count;
+                                            while ((count = inputStream.read(buffer)) != -1) {
+                                                total += count;
+                                                fileOutputStream.write(buffer, 0, count);
+                                            }
+                                            fileOutputStream.close();
+                                            inputStream.close();
+                                        } catch (Exception e) {
+                                            Log.d("ERROR DESCARGA IMAGEN1", Nombre4);
+                                        }
+                                    } else if (response8.getStatusLine().getStatusCode() == 404) {
+                                        Log.d("IMAGEN", "No encontrada8 :" + Nombre4);
+                                    }
+
+                                } catch (Exception e) {
+                                    Log.d("ERROR DESCARGA IMAGEN", e.toString());
+                                }
+                            }
+                        } while (C2.moveToNext());
+                    }
+                }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                Cursor C = null;
+                if (NuevoEquipo.equals("SI")) {
+                    C = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto)", null);
+                    //C = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE ip.Imagen != 'SI'",null);
+                    System.out.println("dato equipo nuevo");
+                } else {
+                    //C = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE ip.Imagen != 'SI' ORDER BY p.idProducto DESC LIMIT 15",null);
+                    C = DB.rawQuery("SELECT p.idProducto, p.Imagen, p.Image  FROM Mv_Producto p JOIN Mv_ImagenP ip ON (p.idProducto = ip.idProducto) WHERE ip.Imagen != 'SI' ORDER BY p.idProducto DESC", null);
+                    System.out.println("dato equipo viejo");
+                }
                 System.out.println("cantidad imagenes " + C.getCount());
                 if (C.moveToFirst()) {
+                    ///////**/////////**///////*///*/*/*///////////////////////////////////////////////////////////////////////////
                     do {
-                        if(isCancelled()) break;
+                        //System.out.println("dato conexion internet" + hasInternet());
+                        System.out.println("dato conexion internet " + isOnlineNet());
+                        //if (!hasInternet()) {
+                        if (!isOnlineNet()) {
+                            //System.out.println ("dato Iniciamos el Planificador" );
+                            NotificationCompat.Builder mBuilder =
+                                    new NotificationCompat.Builder(Inicio.this)
+                                            .setSmallIcon(R.drawable.icono_socima48)
+                                            .setLargeIcon((((BitmapDrawable) getResources()
+                                                    .getDrawable(R.drawable.icono_socima48)).getBitmap()))
+                                            .setContentTitle("Descarga de Imagenes")
+                                            .setContentText("Se ha interrumpido la Conexión, se retomará automáticamente.")
+                                            .setContentInfo("1")
+                                            .setTicker("Aviso")
+                                            .setAutoCancel(true);
+
+                            NotificationManager mNotificationManager =
+                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                            mNotificationManager.notify(8, mBuilder.build());
+
+                            g.setRunning(false);
+                            new Planificador() ;
+                            break;
+                        }
+
+                        if (isCancelled()) break;
+
                         for (int i = 2; i < 6; i++) {
                             String data = C.getString(2);
-                            //System.out.println("dato imagen ubicación imagen " + data);
                             String[] info = data.split("\\.");
-                            //System.out.println("dato largo imagen2 " + info.length);
                             String Nombre = "";
                             String Nombre4 = "";
                             String url8 = "";
-                            if(info.length == 2) {
-                                /*System.out.println("dato imagen 3 " + info[0]);
-                                System.out.println("dato imagen 4 " + info[1]);*/
+                            if (info.length == 2) {
                                 Nombre = C.getInt(0) + "_" + i + ".jpg";
-                                Nombre4 = C.getInt(0) + "_" + i + "-500x500."+info[1];
+                                Nombre4 = C.getInt(0) + "_" + i + "-500x500." + info[1];
                                 String[] info2 = info[0].split("/");
                                 if (Nombre4.length() == 19) {
                                     Nombre4 = "0" + Nombre4;
                                 }
-                                if(info2.length == 2){
+
+                                if (Nombre.length() == 11) {
+                                    Nombre = "0" + Nombre;
+                                }
+                                if (info2.length == 2) {
                                     //System.out.println("http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4);
                                     if (NuevoEquipo.equals("SI")) {
-                                        url8 = "http://socimagestion.com/imagenesTablet/cache/"+info2[0]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
                                         //System.out.println("url : " + url8);
                                     } else {
-                                        url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + Nombre4;
                                         //System.out.println("url : " + url8);
                                     }
-                                    //url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4;
-                                }else{
-                                    //System.out.println("http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4);
+                                } else {
                                     if (NuevoEquipo.equals("SI")) {
-                                        url8 = "http://socimagestion.com/imagenesTablet/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
                                         //System.out.println("url : " + url8);
                                     } else {
-                                        url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + info2[1] + "/" + Nombre4;
                                         //System.out.println("url : " + url8);
                                     }
-                                    //url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
                                 }
-                            }else if(info.length == 3){
+                            } else if (info.length == 3) {
                                 Nombre = C.getInt(0) + "_" + i + ".jpg";
-                                Nombre4 = C.getInt(0) + "_" + i +"." + info[1] + "-500x500."+info[2];
+                                Nombre4 = C.getInt(0) + "_" + i + "." + info[1] + "-500x500." + info[2];
                                 String[] info2 = info[0].split("/");
                                 if (Nombre4.length() == 23) {
                                     Nombre4 = "0" + Nombre4;
                                 }
-                                if(info2.length == 2){
-                                    //System.out.println("http nombre imagen " + Nombre);
-                                    //System.out.println("http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4);
+                                if (Nombre.length() == 11) {
+                                    Nombre = "0" + Nombre;
+                                }
+                                if (info2.length == 2) {
                                     if (NuevoEquipo.equals("SI")) {
-                                        url8 = "http://socimagestion.com/imagenesTablet/cache/"+info2[0]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
                                         //System.out.println("url : " + url8);
                                     } else {
-                                        url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + Nombre4;
                                         //System.out.println("url : " + url8);
                                     }
                                     //url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+Nombre4;
-                                }else{
-                                    //System.out.println("http nombre imagen " + Nombre);
-                                    //System.out.println("http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4);
+                                } else {
                                     if (NuevoEquipo.equals("SI")) {
-                                        url8 = "http://socimagestion.com/imagenesTablet/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/imagenesTablet/SocimaGestion/" + Nombre;
                                         //System.out.println("url : " + url8);
                                     } else {
-                                        url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
+                                        url8 = "http://socimagestion.com/image/cache/" + info2[0] + "/" + info2[1] + "/" + Nombre4;
                                         //System.out.println("url : " + url8);
                                     }
-                                    //url8 = "http://socimagestion.com/image/cache/"+info2[0]+"/"+info2[1]+"/"+Nombre4;
                                 }
                             }
 
@@ -1735,29 +1972,24 @@ public class Inicio extends ActionBarActivity {
                                     root.mkdir();
                                 }
 
-                                //System.out.println("dato largo nombre " + Nombre3.length());
-                                //System.out.println("dato largo nombre " + Nombre4.length());
                                 if (Nombre.length() == 11) {
                                     Nombre = "0" + Nombre;
                                 }
-
+                                System.out.println("url : " + url8);
                                 File Imagen = new File(root + "/" + Nombre);
-                                //System.out.println("http ubicacion imagen :" + root + "/" + Nombre);
-                                //System.out.println("url8 " + url8);
-                                //System.out.println("url imagen guardada " + Imagen.exists());
+                                //System.out.println("imagen : " + Imagen);
+                                //System.out.println("imagen : " + Imagen.exists() + " " + Nombre);
                                 if (Imagen.exists() == false) {
                                     //Imagen.delete();
                                     HttpClient httpClient8 = new DefaultHttpClient();
                                     HttpGet httpGet8 = new HttpGet(url8);
                                     HttpResponse response8 = httpClient8.execute(httpGet8);
-                                    //System.out.println("url8 " + url8);
-                                    //System.out.println("dato info imagen " + response8.getStatusLine().getStatusCode() + " " + Nombre);
                                     if (response8.getStatusLine().getStatusCode() == 200) {
                                         Log.d("IMAGEN", "Descargando " + Nombre4);
                                         String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
                                         DB.execSQL(Sqlim);
-                                        //Log.d("IMAGEN","Dato guardo mv_imagen");
-                                        //System.out.println("Descargando8 " + url8);
+                                        System.out.println("Descargando8 " + url8);
+                                        System.out.println("guardada imagen  " + C.getInt(0));
                                         try {
                                             HttpEntity entity8 = response8.getEntity();
                                             InputStream inputStream = entity8.getContent();
@@ -1775,25 +2007,25 @@ public class Inicio extends ActionBarActivity {
                                             inputStream.close();
                                         } catch (Exception e) {
                                             Log.d("ERROR DESCARGA IMAGEN1", Nombre4);
-                                            //Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
-
                                         }
                                     } else if (response8.getStatusLine().getStatusCode() == 404) {
-                                        //System.out.println("dato url " + url2);
-                                        //Log.d("IMAGEN", "No encontrada2 :" + url2);
                                         Log.d("IMAGEN", "No encontrada8 :" + Nombre4);
+                                    }
+                                } else if (Imagen.exists()) {
+                                    if (NuevoEquipo.equals("SI")) {
+                                        String Sqlim = "UPDATE Mv_ImagenP SET Imagen = 'SI' WHERE idProducto = " + C.getInt(0);
+                                        DB.execSQL(Sqlim);
+                                        System.out.println("imagen ya guardada " + C.getInt(0));
                                     }
                                 }
                             } catch (Exception e) {
-                                //Log.d("ERROR DESCARGA IMAGEN2 ", Nombre4);
-                                //Log.d("ERROR DESCARGA IMAGEN", e.getCause().toString());
                                 Log.d("ERROR DESCARGA IMAGEN", e.toString());
                             }
                         }
                     } while (C.moveToNext());
+                    ///////**/////////**///////*///*/*/*///////////////////////////////////////////////////////////////////////////
                 }
                 imagen = true;
-                //return true;
             }
             return imagen;
         }
@@ -1809,11 +2041,30 @@ public class Inicio extends ActionBarActivity {
             super.onPostExecute(Resultado);
             System.out.println("estadoC " + Resultado);
             if (Resultado == false) {
-                System.out.println("termino");
+                System.out.println("termino false");
                 g.setRunning(false);
             } else {
-                System.out.println("termino");
-                g.setRunning(false);
+                System.out.println("termino true");
+                //if (hasInternet()) {
+                if (isNetworkAvailable()) {
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(Inicio.this)
+                                    .setSmallIcon(R.drawable.icono_socima48)
+                                    .setLargeIcon((((BitmapDrawable) getResources()
+                                            .getDrawable(R.drawable.icono_socima48)).getBitmap()))
+                                    .setContentTitle("Descarga de Imagenes")
+                                    .setContentText("Ha finalizado la descarga de imagenes")
+                                    .setContentInfo("1")
+                                    .setTicker("Aviso")
+                                    .setAutoCancel(true);
+
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    mNotificationManager.notify(6, mBuilder.build());
+
+                    g.setRunning(false);
+                }
             }
         }
 

@@ -56,6 +56,37 @@ public class FragmentoInformacionProductos extends Fragment {
         TxListaProductosSinStock.setTypeface(FuenteUno);
         TxListaProductosNuevos.setTypeface(FuenteUno);
 
+
+        int dia = 0;
+        String fechaActual = "";
+        String fecha5DiasAntes = "";
+        Calendar fecha = new GregorianCalendar();
+        int año = fecha.get(Calendar.YEAR);
+        String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
+        String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
+        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
+        String mes = "";
+        if(mes2.length() == 1){
+            mes = "0"  + mes2;
+        }else{
+            mes = mes2;
+        }
+        if(dia2.length() == 1){
+            dia = 0 + Integer.parseInt(dia2);
+            fechaActual = año + "-" + mes + "-0" + dia;
+        }else{
+            dia = Integer.parseInt(dia2);
+            fechaActual = año + "-" + mes + "-" + dia;
+        }
+
+        if(dia3.length() == 1){
+            dia = 0 + Integer.parseInt(dia2);
+            fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
+        }else{
+            dia = Integer.parseInt(dia2);
+            fecha5DiasAntes = año+"-"+mes+"-"+(dia-5);
+        }
+
         Cursor ProductoNuevos = db.rawQuery("SELECT * from Mv_Producto where Cantidad != 0", null);
         //System.out.println("dato productos nuevos " + ProductoNuevos.getCount() );
         LsProductoNuevos = (ListView) ly.findViewById(R.id.LsProductoNuevo);
@@ -105,52 +136,22 @@ public class FragmentoInformacionProductos extends Fragment {
                     Log.d("ProductoNuevo", "" + CPN);
                     Producto P = new Producto("" + CPN, "" + Modelo, "", "", "", "", "" + cantidad, "" + Precio, "", "", "", "", "", null, null, null, null);
                     Pnv.add(P);
+                }else if(dDias <= 20){
+                    Log.d("ProductoNuevo 20 días", "" + CPN);
+                    Producto P = new Producto("" + CPN, "" + Modelo, "", "", "", "", "" + cantidad, "" + Precio, "", "", "", "", "", null, null, null, null);
+                    Pnv.add(P);
                 }
 
             } while (ProductoNuevos.moveToNext());
             ProductoNuevos.close();
         }
-
-        int dia = 0;
-        String fechaActual = "";
-        String fecha5DiasAntes = "";
-        Calendar fecha = new GregorianCalendar();
-        int año = fecha.get(Calendar.YEAR);
-        String mes2 = String.valueOf(fecha.get(Calendar.MONTH) + 1);
-        String dia2 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH));
-        String dia3 = String.valueOf(fecha.get(Calendar.DAY_OF_MONTH)-5);
-        String mes = "";
-        if(mes2.length() == 1){
-            mes = "0"  + mes2;
-        }else{
-            mes = mes2;
-        }
-
-
-        if(dia2.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-0" + dia;
-        }else{
-            dia = Integer.parseInt(dia2);
-            fechaActual = año + "-" + mes + "-" + dia;
-        }
-
-        if(dia3.length() == 1){
-            dia = 0 + Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+mes+"-0"+(dia-5);
-        }else{
-            dia = Integer.parseInt(dia2);
-            fecha5DiasAntes = año+"-"+2+"-"+(dia-5);
-        }
-
         //System.out.println("fecha 5 dias antes : " + fecha5DiasAntes);
         //System.out.println("fecha actual: " + fechaActual);
 
-        //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto", null);
-        //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0", null);
-        Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0 AND FFA BETWEEN '" + fecha5DiasAntes + "' AND '" + fechaActual + "'", null);
-        //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Cantidad = 0 AND FFA BETWEEN '2015-11-01' AND '2015-11-31'", null);
-//System.out.println("dato stock productos " + ProductosSk.getCount());
+        //Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Agotado = 'SI'", null);
+        Cursor ProductosSk = db.rawQuery("SELECT * from Mv_Producto where Agotado = 'SI' AND FFA BETWEEN '" + fecha5DiasAntes + "' AND '" + fechaActual + "'", null);
+        System.out.println("dato stock productos " + "SELECT * from Mv_Producto where Agotado = 'SI' AND FFA BETWEEN '" + fecha5DiasAntes + "' AND '" + fechaActual + "'");
+        System.out.println("dato stock productos " + ProductosSk.getCount());
         LsProductoSk = (ListView) ly.findViewById(R.id.LsSinStock);
         ArrayList<Producto> Psk = new ArrayList<>();
         ProductosSk.moveToFirst();

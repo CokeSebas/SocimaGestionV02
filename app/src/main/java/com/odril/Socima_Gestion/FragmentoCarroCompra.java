@@ -279,7 +279,7 @@ public class FragmentoCarroCompra extends Fragment {
                 viewHolder.PrecioProductoCarro.setText("$" + formateador.format(TotalDos));
 
             }
-            viewHolder.NombreProductoCarro.setText(mDatasete.get(i).get(4));
+            viewHolder.NombreProductoCarro.setText(mDatasete.get(i).get(4).replace("Ã\u0091","Ñ"));
             viewHolder.CodigoProductoCarro.setText(mDatasete.get(i).get(0));
             viewHolder.CantidadProductoCarro.setText("x " + mDatasete.get(i).get(1));
             final String CantidadMax = mDatasete.get(i).get(5);
@@ -338,7 +338,7 @@ public class FragmentoCarroCompra extends Fragment {
                                                 (ViewGroup) getActivity().findViewById(R.id.Custom));
                                         layout.setMinimumHeight(80);
                                         TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                        MensajeToast.setText("[ " + viewHolder.NombreProductoCarro.getText().toString() + " Producto Eliminado ] ");
+                                        MensajeToast.setText("[ " + viewHolder.NombreProductoCarro.getText().toString().replace("Ã\u0091","Ñ") + " Producto Eliminado ] ");
                                         Toast ts = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
                                         ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                         ts.setView(layout);

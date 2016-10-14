@@ -403,17 +403,32 @@ public class CarroCompleto extends ActionBarActivity {
                                                     Cursor csn = db.rawQuery("select * from  Mv_Orden where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'", null);
 
                                                     if (csn.moveToFirst()) {
-                                                        String total = Total.getText().toString().replace(".", "");
+
+                                                        String total = "";
+                                                        //System.out.println("dato test " + Total.getText().toString().indexOf(","));
+                                                        if(Total.getText().toString().indexOf(",") == 2){
+                                                            total = Total.getText().toString().replace(",", "");
+                                                        }else{
+                                                            total = Total.getText().toString().replace(".", "");
+                                                        }
+
 
                                                         db.execSQL("update Mv_Orden set Total =" + Integer.parseInt(total)
                                                                 + ", Comentario = '" + Comentario.getText().toString() + "', FFI = '" + FechaActual + "',TipoPago = '" +
                                                                 seleccion + "', DireccionFacturacion = '" + DireccionEnvio.getText().toString() + "',DireccionEnvio = '" + DireccionFacturacion.getText().toString() + "' where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'");
 
                                                     } else {
+                                                        //System.out.println("dato test " + Total.getText().toString().indexOf(","));
+                                                        String total2 = "";
+                                                        if(Total.getText().toString().indexOf(",") == 2){
+                                                            total2 = Total.getText().toString().replace(",", "");
+                                                        }else{
+                                                            total2 = Total.getText().toString().replace(".", "");
+                                                        }
                                                         db.execSQL("Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" +
                                                                         Cliente.getInt("OrdenCompra", 0) + "'," +
                                                                         Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() +
-                                                                        "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".", "")) + ",0,'" + FechaActual + "','"
+                                                                        "','" + seleccion + "'," + Integer.parseInt(total2) + ",0,'" + FechaActual + "','"
                                                                         + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
 
 
@@ -637,18 +652,31 @@ public class CarroCompleto extends ActionBarActivity {
                                                     Cursor csn = db.rawQuery("select * from  Mv_Orden where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'", null);
 
                                                     if (csn.moveToFirst()) {
-                                                        db.execSQL("update Mv_Orden set Total =" + Integer.parseInt(Total.getText().toString().replace(".",""))
-                                                                + ", Comentario = '" + Comentario.getText().toString() + "', FFI = '" + FechaActual + "',TipoPago = '" +
-                                                                seleccion + "', DireccionFacturacion = '" + DireccionEnvio.getText().toString() + "', DireccionEnvio = '" + DireccionFacturacion.getText().toString() + "', Estado = 1 where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'");
+                                                        //System.out.println("dato test " + Total.getText().toString().indexOf(","));
+                                                        String total2 = "";
+                                                        if(Total.getText().toString().indexOf(",") == 2){
+                                                            total2 = Total.getText().toString().replace(",", "");
+                                                        }else{
+                                                            total2 = Total.getText().toString().replace(".", "");
+                                                        }
 
                                                         dctoA.getText().toString().trim();
+                                                        db.execSQL("update Mv_Orden set Total =" + Integer.parseInt(total2)
+                                                                + ", Comentario = '" + Comentario.getText().toString() + "', FFI = '" + FechaActual + "',TipoPago = '" +
+                                                                seleccion + "', DireccionFacturacion = '" + DireccionEnvio.getText().toString() + "', DireccionEnvio = '" + DireccionFacturacion.getText().toString() + "', Estado = 1 where CodigoOrden = '" + Cliente.getInt("OrdenCompra", 0) + "'");
 
 
                                                     } else {
 
                                                         //System.out.println("dato id compra " +Cliente.getInt("OrdenCompra", 0));
-
-                                                        db.execSQL("Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" + Cliente.getInt("OrdenCompra", 0) + "'," + Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() + "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".","")) + ",1,'" + FechaActual + "','" + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
+                                                        //System.out.println("dato test " + Total.getText().toString().indexOf(","));
+                                                        String total2 = "";
+                                                        if(Total.getText().toString().indexOf(",") == 2){
+                                                            total2 = Total.getText().toString().replace(",", "");
+                                                        }else{
+                                                            total2 = Total.getText().toString().replace(".", "");
+                                                        }
+                                                        db.execSQL("Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" + Cliente.getInt("OrdenCompra", 0) + "'," + Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() + "','" + seleccion + "'," + Integer.parseInt(total2) + ",1,'" + FechaActual + "','" + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
                                                         //System.out.println("dato sql " + "Insert into Mv_Orden(CodigoOrden,idCliente,DireccionFacturacion,TipoPago,Total,Estado,FFI,FFM,Comentario,Vendedor,DireccionEnvio, dcto)values('" + Cliente.getInt("OrdenCompra", 0) + "'," + Integer.parseInt(Cliente.getString("IDCliente", "0")) + ",'" + DireccionEnvio.getText().toString() + "','" + seleccion + "'," + Integer.parseInt(Total.getText().toString().replace(".","")) + ",1,'" + FechaActual + "','" + FechaActual + "','" + Comentario.getText().toString() + "'," + Usuario.getInt("CodigoVendedor", 0) + ",'" + DireccionFacturacion.getText().toString() + "','" + dctoA.getText().toString() + "');");
 
                                                         Cursor Cs, Cs2 = null;
@@ -836,13 +864,19 @@ public class CarroCompleto extends ActionBarActivity {
         if (T > 0) {
 
             iva = (double) T / 100;
-            Log.d("TotalIva2", "" + iva);
+            Log.d("TotalIva", "" + iva);
             iva = iva * 19;
-            final int s = T - (int) iva;
-            Log.d("Totaliva3", "" + s);
+            final int s = T + (int) iva;
+            //final int s = T - (int) iva;
+            Log.d("Totalsin iva", "" + s);
+            Log.d("Total", "" + T);
 
-            TotalSinIva.setText("" + formateador.format(s));
+            TotalSinIva.setText("" + formateador.format(T));
             Iva.setText("" + formateador.format(iva) + "");
+            Total.setText(""+formateador.format(s));
+            System.out.println("dato total " + T);
+            System.out.println("dato iva " + iva);
+            System.out.println("dato totalSI "+s);
         }
 
     }
@@ -893,6 +927,10 @@ public class CarroCompleto extends ActionBarActivity {
             TotalSinIva.setText("" + formateador.format(s));
             Iva.setText("" + formateador.format(iva) + "");
             Total.setText("" + formateador.format(totaldcto));
+
+            System.out.println("dato total " + T);
+            System.out.println("dato iva " + iva);
+            System.out.println("dato totalSI "+s);
         }
     }
 
@@ -931,11 +969,16 @@ public class CarroCompleto extends ActionBarActivity {
                 iva = (double) T / 100;
                 Log.d("TotalIva2", "" + iva);
                 iva = iva * 19;
-                final int s = T - (int) iva;
+                final int s = T + (int) iva;
+                //final int s = T - (int) iva;
                 Log.d("Totaliva3", "" + s);
 
-                TotalSinIva.setText("" + formateador.format(s));
+                TotalSinIva.setText("" + formateador.format(T));
                 Iva.setText("" + formateador.format(iva) + "");
+                Total.setText(""+formateador.format(s));
+                System.out.println("dato total " + T);
+                System.out.println("dato iva " + iva);
+                System.out.println("dato totalSI "+s);
             }
 
 
@@ -951,7 +994,7 @@ public class CarroCompleto extends ActionBarActivity {
                 viewHolder.PrecioProductoCarroDos.setText("$" + formateador.format(TotalDos));
 
             }
-            viewHolder.NombreProductoCarroDos.setText(mDatasetex.get(i).get(4));
+            viewHolder.NombreProductoCarroDos.setText(mDatasetex.get(i).get(4).replace("Ã\u0091","Ñ"));
             viewHolder.CodigoProductoCarroDos.setText(mDatasetex.get(i).get(0));
             viewHolder.CantidadProductoCarroDos.setText("x " + mDatasetex.get(i).get(1));
             final String CantidadMax = mDatasetex.get(i).get(5);
@@ -1028,7 +1071,7 @@ public class CarroCompleto extends ActionBarActivity {
                                                 (ViewGroup) findViewById(R.id.Custom));
                                         layout.setMinimumHeight(80);
                                         TextView MensajeToast = (TextView) layout.findViewById(R.id.TxToast);
-                                        MensajeToast.setText("[ " + viewHolder.NombreProductoCarroDos.getText().toString() + " Producto Eliminado ] ");
+                                        MensajeToast.setText("[ " + viewHolder.NombreProductoCarroDos.getText().toString().replace("Ã\u0091","Ñ") + " Producto Eliminado ] ");
                                         Toast ts = Toast.makeText(CarroCompleto.this, "", Toast.LENGTH_SHORT);
                                         ts.setGravity(Gravity.TOP | Gravity.RIGHT, 85, 350);
                                         ts.setView(layout);

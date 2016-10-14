@@ -240,7 +240,7 @@
                         android:id="@+id/LSinIva"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="false"
                         android:layout_below="@id/Comentario"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
@@ -268,7 +268,7 @@
                         android:id="@+id/LIva"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="false"
                         android:layout_below="@id/LSinIva"
                         android:layout_marginRight="10dp"
                         android:orientation="horizontal">
@@ -296,7 +296,7 @@
                         android:id="@+id/LTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="false"
                         android:layout_below="@id/LIva"
                         android:layout_marginRight="10dp"
                         android:orientation="horizontal">
@@ -323,7 +323,7 @@
                         android:id="@+id/Dcto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="false"
                         android:layout_below="@id/LTotal"
                         android:layout_marginRight="10dp"
                         android:orientation="horizontal">
@@ -356,7 +356,7 @@
                         android:id="@+id/LCreditoDispo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="false"
                         android:layout_below="@id/Dcto"
                         android:layout_marginRight="10dp"
                         android:orientation="horizontal">

@@ -503,7 +503,7 @@ public class VerOrden extends ActionBarActivity  {
                 viewHolder.PrecioProductoCarroDos.setText("$" + formateador.format(TotalDos));
 
             }
-            viewHolder.NombreProductoCarroDos.setText(mDatasetex.get(i).get(4));
+            viewHolder.NombreProductoCarroDos.setText(mDatasetex.get(i).get(4).replace("Ã\u0091","Ñ"));
             viewHolder.CodigoProductoCarroDos.setText(mDatasetex.get(i).get(0));
             viewHolder.CantidadProductoCarroDos.setText("x " + mDatasetex.get(i).get(1));
 

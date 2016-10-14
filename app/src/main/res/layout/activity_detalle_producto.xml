@@ -383,15 +383,14 @@
 
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="75dp"
+                                    android:layout_height="100dp"
                                     android:id="@+id/marcaPro"
-                                    android:layout_above="@+id/btnPdfProducto"
                                     android:layout_alignParentLeft="true"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_alignRight="@+id/TipoColor"
-                                    android:layout_alignEnd="@+id/TipoColor"
+                                    android:layout_above="@+id/btnPdfProducto"
+                                    android:layout_alignRight="@+id/btnPdfProducto"
                                     android:layout_below="@+id/TipoAdicional" />
+
                                 <Button
                                     style="?android:attr/buttonStyleSmall"
                                     android:layout_width="wrap_content"
